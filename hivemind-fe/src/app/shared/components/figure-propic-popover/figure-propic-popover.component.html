@@ -1,0 +1,15 @@
+<hm-figure-propic
+  #propic
+  class="cursor-pointer"
+  stopClickPropagation
+  [propicId]="propicId"
+  [routerLink]="'/user/' + username"
+></hm-figure-propic>
+
+<div #popover popover class="z-30 py-4 drop-shadow-card" stopClickPropagation>
+  <hm-card-profile-preview
+    *ngIf="hasBeenOpened"
+    [userId]="username"
+    (profilePreviewLoaded)="isProfilePreviewLoaded = $event"
+  ></hm-card-profile-preview>
+</div>

@@ -1,0 +1,64 @@
+<!-- Profile Header -->
+<hm-header-sticky-template [backPageButton]="true">
+  <ng-template #contentNextToBackPageButton>
+    <!-- Full Name & Username / Follow -->
+    <ng-container *ngIf="user$ | async as user">
+      <div class="flex w-full flex-col truncate">
+        <div class="flex items-center gap-2 text-2xl">
+          <h1 class="truncate font-bold">{{ user.profile.fullName }}</h1>
+          <i
+            *ngIf="user.verified"
+            class="fa-solid fa-circle-check fa-xs flex-shrink-0 text-accent"
+          ></i>
+        </div>
+        <span class="text-lg text-base-content-muted">&#64;{{ user.username }}</span>
+      </div>
+
+      <!-- Follow/Edit Button -->
+      <hm-button-follow *ngIf="user.relation && showBadgeOnHeader" [user]="user"></hm-button-follow>
+      <button
+        *ngIf="!user.relation && showBadgeOnHeader"
+        class="btn btn-outline btn-sm"
+        (click)="modalEditProfileComponent()?.open()"
+      >
+        <i class="fa-solid fa-pen-to-square"></i>
+        Edit Profile
+      </button>
+    </ng-container>
+
+    <!-- User Not Found -->
+    <h1 *ngIf="!(user$ | async)" class="text-2xl font-bold">Profile</h1>
+  </ng-template>
+</hm-header-sticky-template>
+
+<!-- General Info -->
+<hm-section-profile-main
+  [user]="user$ | async"
+  (badgeContainerIntersected)="showBadgeOnHeader = $event"
+  (followersClicked)="modalFollowersComponent()?.open()"
+  (followingsClicked)="modalFollowingsComponent()?.open()"
+  (editProfileClicked)="modalEditProfileComponent()?.open()"
+></hm-section-profile-main>
+
+<!-- Retry Fetch Profile Button -->
+<div *ngIf="userFetchFailed" class="py-12">
+  <hm-button-retry (retry)="fetchProfile(true)"></hm-button-retry>
+</div>
+
+<!-- Main Content -->
+<ng-container *ngIf="user$ | async as user">
+  <!-- Infinite Scroll Buzzes -->
+  <hm-section-profile-buzzes
+    [userId]="user.id"
+    [username]="user.username"
+  ></hm-section-profile-buzzes>
+
+  <!-- Followers -->
+  <hm-modal-followers [userId]="user.id"></hm-modal-followers>
+
+  <!-- Followings  -->
+  <hm-modal-followings [userId]="user.id"></hm-modal-followings>
+
+  <!-- Edit Profile -->
+  <hm-modal-edit-profile *ngIf="!user.relation"></hm-modal-edit-profile>
+</ng-container>

@@ -1,0 +1,45 @@
+<hm-infinite-scroll-window
+  [items]="buzzes"
+  [infiniteScrollDisabled]="infiniteScrollDisabled"
+  [showError]="buzzesFetchFailed"
+  [showLoading]="fetchingBuzzes"
+  [overscan]="10"
+  [estimatedSize]="860"
+  (loadMore)="fetchBuzzes()"
+>
+  <ng-template #itemTemplate let-item>
+    <div class="border-b border-base-content/10">
+      <hm-anchor-buzz *ngIf="item" [buzz]="item"></hm-anchor-buzz>
+    </div>
+  </ng-template>
+
+  <ng-template #loadingTemplate>
+    <div class="flex justify-center py-12">
+      <span class="loading loading-ring loading-lg text-base-content-muted"></span>
+    </div>
+  </ng-template>
+
+  <ng-template #errorTemplate>
+    <div class="py-12">
+      <hm-button-retry (retry)="fetchBuzzes(true)"></hm-button-retry>
+    </div>
+  </ng-template>
+</hm-infinite-scroll-window>
+
+<!-- Not Found -->
+<div
+  *ngIf="buzzes.length === 0 && cursor === null"
+  class="mx-auto mt-[10%] flex w-fit flex-col gap-1 text-pretty text-start"
+>
+  <h1 #notFoundTitle class="w-fit max-w-96 text-3xl font-bold">
+    No result found for
+    <br />
+    <span class="break-all">"{{ searchTerm }}"</span>
+  </h1>
+  <span
+    class="text-lg text-base-content-muted"
+    [ngStyle]="{ width: notFoundTitle?.offsetWidth + 'px' }"
+  >
+    Try adjusting your search or use different keywords.
+  </span>
+</div>

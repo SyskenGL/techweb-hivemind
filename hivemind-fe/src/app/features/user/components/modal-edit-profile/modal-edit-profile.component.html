@@ -1,0 +1,421 @@
+<dialog #modal class="modal backdrop-blur-sm duration-0">
+  <div
+    class="modal-box flex h-3/5 flex-col border border-base-content/10 p-0 py-6 drop-shadow-card sm:w-full sm:max-w-2xl"
+  >
+    <!-- Modal Header -->
+    <div class="flex items-center justify-between border-b border-base-content/10 px-8 pb-6">
+      <!-- Title -->
+      <div class="flex flex-col">
+        <h1 class="text-2xl font-bold">Edit Profile</h1>
+      </div>
+
+      <div class="flex items-center gap-5">
+        <!-- Submit Button -->
+        <button
+          class="btn btn-secondary relative flex w-fit items-center justify-center font-semibold"
+          [disabled]="submitting || updateProfileForm.invalid"
+          (click)="onSave()"
+        >
+          <span class="flex items-center text-base" [ngClass]="{ invisible: submitting }">
+            Save
+          </span>
+          <span
+            *ngIf="submitting"
+            class="loading loading-spinner loading-xs absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
+          ></span>
+        </button>
+
+        <!-- Close Button -->
+        <button
+          class="btn btn-circle btn-ghost btn-sm -mr-2 focus-within:outline-none"
+          (click)="close()"
+        >
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Modal Body / Edit Section -->
+    <form [formGroup]="updateProfileForm" class="overflow-auto overflow-x-hidden pb-2">
+      <!-- Cover Image -->
+      <div class="relative">
+        <hm-figure-cover
+          [zoomable]="false"
+          [coverId]="coverId.value"
+          [priority]="true"
+        ></hm-figure-cover>
+
+        <!-- Change Button -->
+        <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+          <label
+            class="btn btn-circle btn-md border-0 bg-base-100/50 sm:btn-lg hover:bg-base-100/75"
+          >
+            <i class="fa-solid fa-camera-retro fa-sm"></i>
+            <input
+              type="file"
+              class="hidden"
+              accept="image/png, image/jpeg, image/webp, image/gif"
+              (change)="onFileSelect($event, 'cover')"
+            />
+          </label>
+        </div>
+
+        <!-- Remove Button -->
+        <div *ngIf="coverId.value" class="absolute bottom-2 right-2">
+          <button
+            class="btn btn-circle btn-xs border-none bg-base-100/50 sm:btn-sm hover:bg-error/20 hover:text-error"
+            (click)="removeImage('cover')"
+          >
+            <i class="fa-solid fa-trash-can fa-sm"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="relative flex flex-wrap items-end justify-between gap-y-5 px-8">
+        <!-- Profile Picture (Avatar) -->
+        <hm-figure-propic
+          [zoomable]="false"
+          [propicId]="propicId.value"
+          [border]="true"
+          [priority]="true"
+          class="absolute left-8 top-0 h-36 -translate-y-2/3 sm:h-48"
+        ></hm-figure-propic>
+
+        <!-- Change Button -->
+        <div
+          class="absolute bottom-[4.5rem] left-[6.5rem] -translate-x-1/2 translate-y-1/2 sm:bottom-24 sm:left-32"
+        >
+          <label
+            class="btn btn-circle btn-md border-0 bg-base-100/50 sm:btn-lg hover:bg-base-100/75"
+          >
+            <i class="fa-solid fa-camera-retro fa-sm"></i>
+            <input
+              type="file"
+              class="hidden"
+              accept="image/png, image/jpeg, image/webp, image/gif"
+              (change)="onFileSelect($event, 'propic')"
+            />
+          </label>
+        </div>
+
+        <!-- Remove Button -->
+        <div *ngIf="propicId.value" class="absolute bottom-4 left-36 sm:left-44">
+          <button
+            class="btn btn-circle btn-xs border-none bg-base-100/50 sm:btn-sm hover:bg-error/20 hover:text-error"
+            (click)="removeImage('propic')"
+          >
+            <i class="fa-solid fa-trash-can fa-sm"></i>
+          </button>
+        </div>
+
+        <!-- Placeholder to Maintain Layout Consistency -->
+        <div class="h-12 w-36 sm:h-16 sm:w-48"></div>
+      </div>
+
+      <!-- Profile Content -->
+      <div class="space-y-7 p-8 pb-0">
+        <div class="flex gap-5 max-sm:flex-col max-sm:gap-7">
+          <!-- FullName Input -->
+          <div class="form-control flex-1">
+            <div
+              class="flabel-container border-base-content/10"
+              [ngClass]="{ 'border-error focus-within:border-error': fullNameError }"
+            >
+              <input
+                id="fullName"
+                type="text"
+                class="flabel-input peer"
+                placeholder="Full Name"
+                formControlName="fullName"
+                maxlength="70"
+              />
+              <label for="fullName" class="flabel" [ngClass]="{ 'text-error': fullNameError }">
+                Full Name
+              </label>
+              <i *ngIf="fullNameError" class="fa-solid fa-circle-xmark pl-3 text-error"></i>
+            </div>
+            <p
+              *ngIf="fullNameError"
+              class="label label-text-alt pb-0 text-error"
+              [innerText]="fullNameError"
+            ></p>
+          </div>
+
+          <!-- Birthdate Input -->
+          <div class="form-control flex-1">
+            <div
+              class="flabel-container border-base-content/10"
+              [ngClass]="{
+                'border-error focus-within:border-error': birthdateError,
+                'gap-2 pr-2': birthdate.type === 'date'
+              }"
+            >
+              <input
+                #birthdate
+                id="birthdate"
+                type="text"
+                class="flabel-input peer"
+                placeholder="Birthdate"
+                formControlName="birthdate"
+                (focus)="birthdate.type = 'date'"
+                (blur)="birthdate.type = 'text'"
+              />
+              <label for="birthdate" class="flabel" [ngClass]="{ 'text-error': birthdateError }">
+                Birthdate
+              </label>
+              <i
+                *ngIf="birthdateError && birthdate.type !== 'date'"
+                class="fa-solid fa-circle-xmark pl-3 text-error"
+              ></i>
+              <button
+                *ngIf="birthdate.type === 'date'"
+                type="button"
+                class="btn-circle btn-ghost btn-sm text-base-content"
+                (focus)="birthdate.type = 'date'"
+                (blur)="birthdate.type = 'text'"
+                (click)="birthdate.showPicker()"
+              >
+                <i class="fa-regular fa-calendar"></i>
+              </button>
+            </div>
+            <p
+              *ngIf="birthdateError"
+              class="label label-text-alt pb-0 text-error"
+              [innerText]="birthdateError"
+            ></p>
+          </div>
+        </div>
+
+        <!-- Bio Input -->
+        <div class="form-control">
+          <div class="multi-flabel-container border-base-content/10">
+            <textarea
+              #textarea
+              class="multi-flabel-input peer h-24 w-full resize-none text-base"
+              formControlName="bio"
+              placeholder="Bio"
+              maxlength="300"
+            ></textarea>
+            <label for="birthdate" class="multi-flabel">Bio</label>
+          </div>
+        </div>
+
+        <!-- Instagram Input -->
+        <div class="form-control">
+          <div
+            class="flabel-container flex- border-base-content/10"
+            [ngClass]="{ 'border-error focus-within:border-error': getUrlError(instagramUrl) }"
+          >
+            <i
+              class="fa-brands fa-instagram w-7 text-base-content-muted"
+              [ngClass]="{ 'text-error': getUrlError(instagramUrl) }"
+            ></i>
+            <label
+              class="text-base-content-muted"
+              [ngClass]="{ 'text-error': getUrlError(facebookUrl) }"
+            >
+              <span class="max-sm:hidden">https://instagram.com/</span>
+              <span class="sm:hidden">.../</span>
+            </label>
+            <input
+              id="instagramUrl"
+              type="text"
+              class="flabel-input"
+              placeholder="Instagram"
+              formControlName="instagramUrl"
+              maxlength="200"
+            />
+            <label
+              for="instagramUrl"
+              class="flabel"
+              [ngClass]="{ 'text-error': getUrlError(instagramUrl) }"
+            >
+              Instagram
+            </label>
+            <i
+              *ngIf="getUrlError(instagramUrl)"
+              class="fa-solid fa-circle-xmark pl-3 text-error"
+            ></i>
+          </div>
+          <p
+            *ngIf="getUrlError(instagramUrl)"
+            class="label label-text-alt pb-0 text-error"
+            [innerText]="getUrlError(instagramUrl)"
+          ></p>
+        </div>
+
+        <!-- Facebook Input -->
+        <div class="form-control">
+          <div
+            class="flabel-container max-w-full border-base-content/10"
+            [ngClass]="{ 'border-error focus-within:border-error': getUrlError(facebookUrl) }"
+          >
+            <i
+              class="fa-brands fa-facebook-f w-7 pl-0.5 text-base-content-muted"
+              [ngClass]="{ 'text-error': getUrlError(facebookUrl) }"
+            ></i>
+            <label
+              class="text-base-content-muted"
+              [ngClass]="{ 'text-error': getUrlError(facebookUrl) }"
+            >
+              <span class="max-sm:hidden">https://facebook.com/</span>
+              <span class="sm:hidden">.../</span>
+            </label>
+            <input
+              id="facebookUrl"
+              type="text"
+              class="flabel-input"
+              placeholder="Facebook"
+              formControlName="facebookUrl"
+              maxlength="200"
+            />
+            <label
+              for="facebookUrl"
+              class="flabel"
+              [ngClass]="{ 'text-error': getUrlError(facebookUrl) }"
+            >
+              Facebook
+            </label>
+            <i
+              *ngIf="getUrlError(facebookUrl)"
+              class="fa-solid fa-circle-xmark pl-3 text-error"
+            ></i>
+          </div>
+          <p
+            *ngIf="getUrlError(facebookUrl)"
+            class="label label-text-alt pb-0 text-error"
+            [innerText]="getUrlError(facebookUrl)"
+          ></p>
+        </div>
+
+        <!-- X/Twitter Input -->
+        <div class="form-control">
+          <div
+            class="flabel-container border-base-content/10"
+            [ngClass]="{ 'border-error focus-within:border-error': getUrlError(twitterUrl) }"
+          >
+            <i
+              class="fa-brands fa-x-twitter w-7 text-base-content-muted"
+              [ngClass]="{ 'text-error': getUrlError(twitterUrl) }"
+            ></i>
+            <label
+              class="text-base-content-muted"
+              [ngClass]="{ 'text-error': getUrlError(twitterUrl) }"
+            >
+              <span class="max-sm:hidden">https://x.com/</span>
+              <span class="sm:hidden">.../</span>
+            </label>
+            <input
+              id="twitterUrl"
+              type="text"
+              class="flabel-input"
+              placeholder="X / Twitter"
+              formControlName="twitterUrl"
+              maxlength="200"
+            />
+            <label
+              for="twitterUrl"
+              class="flabel"
+              [ngClass]="{ 'text-error': getUrlError(twitterUrl) }"
+            >
+              X / Twitter
+            </label>
+            <i *ngIf="getUrlError(twitterUrl)" class="fa-solid fa-circle-xmark pl-3 text-error"></i>
+          </div>
+          <p
+            *ngIf="getUrlError(twitterUrl)"
+            class="label label-text-alt pb-0 text-error"
+            [innerText]="getUrlError(twitterUrl)"
+          ></p>
+        </div>
+
+        <!-- LinkedIn Input -->
+        <div class="form-control">
+          <div
+            class="flabel-container border-base-content/10"
+            [ngClass]="{ 'border-error focus-within:border-error': getUrlError(linkedInUrl) }"
+          >
+            <i
+              class="fa-brands fa-linkedin-in w-7 text-base-content-muted"
+              [ngClass]="{ 'text-error': getUrlError(linkedInUrl) }"
+            ></i>
+            <label
+              class="text-base-content-muted"
+              [ngClass]="{ 'text-error': getUrlError(linkedInUrl) }"
+            >
+              <span class="max-sm:hidden">https://linkedin.com/in/</span>
+              <span class="sm:hidden">.../</span>
+            </label>
+            <input
+              id="linkedInUrl"
+              type="text"
+              class="flabel-input"
+              placeholder="LinkedIn"
+              formControlName="linkedInUrl"
+              maxlength="200"
+            />
+            <label
+              for="linkedInUrl"
+              class="flabel"
+              [ngClass]="{ 'text-error': getUrlError(linkedInUrl) }"
+            >
+              LinkedIn
+            </label>
+            <i
+              *ngIf="getUrlError(linkedInUrl)"
+              class="fa-solid fa-circle-xmark pl-3 text-error"
+            ></i>
+          </div>
+          <p
+            *ngIf="getUrlError(linkedInUrl)"
+            class="label label-text-alt pb-0 text-error"
+            [innerText]="getUrlError(linkedInUrl)"
+          ></p>
+        </div>
+
+        <!-- Personal Website Input -->
+        <div class="form-control">
+          <div
+            class="flabel-container border-base-content/10"
+            [ngClass]="{ 'border-error focus-within:border-error': getUrlError(websiteUrl) }"
+          >
+            <i
+              class="fa-solid fa-globe w-7 text-base-content-muted"
+              [ngClass]="{ 'text-error': getUrlError(websiteUrl) }"
+            ></i>
+            <label
+              class="text-base-content-muted"
+              [ngClass]="{ 'text-error': getUrlError(websiteUrl) }"
+            >
+              https://
+            </label>
+            <input
+              id="websiteUrl"
+              type="text"
+              class="flabel-input"
+              placeholder="Personal Website"
+              formControlName="websiteUrl"
+              maxlength="200"
+            />
+            <label
+              for="websiteUrl"
+              class="flabel"
+              [ngClass]="{ 'text-error': getUrlError(websiteUrl) }"
+            >
+              Personal Website
+            </label>
+            <i *ngIf="getUrlError(websiteUrl)" class="fa-solid fa-circle-xmark pl-3 text-error"></i>
+          </div>
+          <p
+            *ngIf="getUrlError(websiteUrl)"
+            class="label label-text-alt pb-0 text-error"
+            [innerText]="getUrlError(websiteUrl)"
+          ></p>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <!-- Close Outside Button -->
+  <button class="modal-backdrop focus-within:ring-0" (click)="close()">close</button>
+</dialog>

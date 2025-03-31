@@ -1,0 +1,27 @@
+<!-- Infinite Scroll User Bookmarks -->
+<hm-infinite-scroll-window
+  [items]="buzzes"
+  [showError]="buzzesFetchFailed"
+  [showLoading]="fetchingBuzzes"
+  [estimatedSize]="860"
+  [overscan]="10"
+  (loadMore)="fetchBuzzes()"
+>
+  <ng-template #itemTemplate let-item>
+    <div class="border-b border-base-content/10">
+      <hm-anchor-buzz *ngIf="item" [buzz]="item"></hm-anchor-buzz>
+    </div>
+  </ng-template>
+
+  <ng-template #loadingTemplate>
+    <div class="flex justify-center py-12">
+      <span class="loading loading-ring loading-lg text-base-content-muted"></span>
+    </div>
+  </ng-template>
+
+  <ng-template #errorTemplate>
+    <div class="py-12">
+      <hm-button-retry (retry)="fetchBuzzes(true)"></hm-button-retry>
+    </div>
+  </ng-template>
+</hm-infinite-scroll-window>

@@ -1,0 +1,22 @@
+<div
+  collapseOnScroll
+  [margin]="400"
+  class="sticky top-0 z-40 border-b border-base-content/10 bg-base-100/75 backdrop-blur-md"
+>
+  <div class="flex w-full items-center gap-5 py-3 pl-4 pr-8" *ngIf="backPageButton">
+    <!-- Back Button -->
+    <button class="btn btn-circle btn-ghost btn-md" (click)="location.back()">
+      <i class="fa-solid fa-arrow-left fa-lg"></i>
+    </button>
+
+    <!-- Content Template -->
+    <ng-container *ngIf="templateContentNextToBackPageButton">
+      <ng-container *ngTemplateOutlet="templateContentNextToBackPageButton"></ng-container>
+    </ng-container>
+  </div>
+
+  <!-- Content Template -->
+  <ng-container *ngIf="templateContentMain">
+    <ng-container *ngTemplateOutlet="templateContentMain"></ng-container>
+  </ng-container>
+</div>

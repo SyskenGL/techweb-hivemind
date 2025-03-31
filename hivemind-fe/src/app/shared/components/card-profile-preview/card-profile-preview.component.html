@@ -1,0 +1,116 @@
+<hm-skeleton-profile-preview *ngIf="!(user$ | async)"></hm-skeleton-profile-preview>
+<div
+  *ngIf="user$ | async as user"
+  class="card w-80 cursor-default overflow-hidden border border-base-content/10 bg-base-100 md:w-[22rem]"
+>
+  <div>
+    <!-- User Cover -->
+    <hm-figure-cover [coverId]="user.profile.coverId"></hm-figure-cover>
+    <div class="relative h-8">
+      <!-- User Propic -->
+      <div class="absolute bottom-0 left-1/2 h-24 w-24 -translate-x-1/2 cursor-pointer">
+        <hm-figure-propic
+          [routerLink]="'/user/' + user.username"
+          [propicId]="user.profile.propicId"
+          [border]="true"
+          class=""
+        ></hm-figure-propic>
+      </div>
+    </div>
+  </div>
+
+  <div class="card-body gap-4 pb-7 pt-4">
+    <!-- Full Name & Username -->
+    <div class="flex w-full flex-col items-center">
+      <div class="w-full text-pretty break-words text-center">
+        <a
+          class="link-hover link inline min-w-0 font-heading text-lg font-bold"
+          [routerLink]="'/user/' + user.username"
+        >
+          {{ user.profile.fullName }}
+        </a>
+        <i *ngIf="user.verified" class="fa-solid fa-circle-check ml-1 text-accent"></i>
+      </div>
+      <div class="w-full text-pretty break-words text-center">
+        <a
+          class="link-hover link min-w-0 text-sm text-base-content-muted hover:text-accent"
+          [routerLink]="'/user/' + user.username"
+        >
+          &#64;{{ user.username }}
+        </a>
+      </div>
+    </div>
+
+    <div
+      *ngIf="user.profile.bio || hasSocials"
+      class="flex flex-col items-center justify-center gap-3"
+    >
+      <!-- Bio -->
+      <p
+        *ngIf="user.profile.bio"
+        class="line-clamp-[5] w-full min-w-0 whitespace-pre-wrap text-pretty break-words text-start text-sm"
+        [innerText]="user.profile.bio"
+      ></p>
+
+      <!-- Social Links -->
+      <div *ngIf="hasSocials" class="flex divide-x divide-base-content/10">
+        <ng-container
+          *ngFor="
+            let social of [
+              { url: user.profile.facebookUrl, icon: 'fa-brands fa-facebook-f', label: 'Facebook' },
+              {
+                url: user.profile.instagramUrl,
+                icon: 'fa-brands fa-instagram',
+                label: 'Instagram'
+              },
+              {
+                url: user.profile.twitterUrl,
+                icon: 'fa-brands fa-x-twitter',
+                label: 'X / Twitter'
+              },
+              {
+                url: user.profile.linkedInUrl,
+                icon: 'fa-brands fa-linkedin-in',
+                label: 'LinkedIn'
+              },
+              { url: user.profile.websiteUrl, icon: 'fa-globe fa-solid', label: 'Website' }
+            ]
+          "
+        >
+          <span
+            *ngIf="social.url"
+            class="tooltip-helper tooltip tooltip-bottom"
+            [attr.data-tip]="social.label"
+          >
+            <a
+              [href]="social.url"
+              target="_blank"
+              class="link inline-block h-full w-full transform px-5 text-xl transition-all hover:scale-125"
+            >
+              <i [class]="social.icon + ' fa-xs'"></i>
+            </a>
+          </span>
+        </ng-container>
+      </div>
+    </div>
+
+    <!-- Statistics -->
+    <div class="flex w-full divide-x divide-base-content/10">
+      <div class="flex flex-1 flex-col text-center">
+        <span class="font-digit text-xl font-bold">{{ user.metric.buzzes | shortNumber }}</span>
+        <span class="text-sm text-base-content-muted">Buzzes</span>
+      </div>
+      <div class="flex flex-1 flex-col text-center">
+        <span class="font-digit text-xl font-bold">{{ user.metric.followers | shortNumber }}</span>
+        <span class="text-sm text-base-content-muted">Followers</span>
+      </div>
+      <div class="flex flex-1 flex-col text-center">
+        <span class="font-digit text-xl font-bold">{{ user.metric.followings | shortNumber }}</span>
+        <span class="text-sm text-base-content-muted">Followings</span>
+      </div>
+    </div>
+
+    <!-- Follow / Unfollow Button -->
+    <hm-button-follow *ngIf="user.relation" [user]="user" [fullWidth]="true"></hm-button-follow>
+  </div>
+</div>

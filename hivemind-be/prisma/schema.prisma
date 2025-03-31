@@ -1,0 +1,212 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["views"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATASTORE_DATABASE_URL")
+}
+
+// ┌──────────────────────────────────────┐
+// │ Enums                                │
+// └──────────────────────────────────────┘
+
+enum VoteType {
+  up
+  down
+
+  @@map("vote_type")
+}
+
+// ┌──────────────────────────────────────┐
+// │ Models                               │
+// └──────────────────────────────────────┘
+
+model User {
+  id           String        @id @default(dbgenerated("uuidv7_sub_ms()"))
+  username     String        @unique @db.VarChar(30)
+  email        String        @unique @db.VarChar(255)
+  secret       String        @db.Char(60)
+  verified     Boolean       @default(false) @db.Boolean
+  createdAt    DateTime      @default(now()) @map("created_at") @db.Timestamptz
+  profile      Profile?
+  followers    Follow[]      @relation("Following")
+  followings   Follow[]      @relation("Follower")
+  buzzes       Buzz[]
+  buzzVotes    BuzzVote[]
+  comments     Comment[]
+  commentVotes CommentVote[]
+  images       Image[]
+  bookmarks    Bookmark[]
+
+  @@map("user")
+}
+
+model Profile {
+  id           String    @id
+  fullName     String    @map("full_name") @db.VarChar(70)
+  birthdate    DateTime  @db.Date
+  bio          String?   @db.Text
+  propicId     String?   @unique @map("propic_id")
+  coverId      String?   @unique @map("cover_id")
+  websiteUrl   String?   @map("website_url") @db.VarChar(255)
+  twitterUrl   String?   @map("twitter_url") @db.VarChar(255)
+  linkedInUrl  String?   @map("linkedin_url") @db.VarChar(255)
+  facebookUrl  String?   @map("facebook_url") @db.VarChar(255)
+  instagramUrl String?   @map("instagram_url") @db.VarChar(255)
+  updatedAt    DateTime? @map("updated_at") @db.Timestamptz
+  user         User      @relation(fields: [id], references: [id], onDelete: Cascade)
+  propic       Image?    @relation("Propic", fields: [propicId], references: [id], onDelete: SetNull)
+  cover        Image?    @relation("Cover", fields: [coverId], references: [id], onDelete: SetNull)
+
+  @@map("profile")
+}
+
+model Follow {
+  id          String   @id @default(dbgenerated("uuidv7_sub_ms()"))
+  followerId  String   @map("follower_id")
+  followingId String   @map("following_id")
+  followedAt  DateTime @default(now()) @map("followed_at") @db.Timestamptz
+  follower    User     @relation("Follower", fields: [followerId], references: [id], onDelete: Cascade)
+  following   User     @relation("Following", fields: [followingId], references: [id], onDelete: Cascade)
+
+  @@unique([followingId, followerId])
+  @@map("follow")
+}
+
+model Buzz {
+  id        String      @id @default(dbgenerated("uuidv7_sub_ms()"))
+  authorId  String      @map("author_id")
+  title     String      @db.VarChar(70)
+  content   String      @db.Text
+  createdAt DateTime    @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt DateTime?   @map("updated_at") @db.Timestamptz
+  viewCount Int         @default(0) @map("view_count")
+  author    User        @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  hashtags  Hashtag[]
+  media     BuzzMedia[]
+  votes     BuzzVote[]
+  comments  Comment[]
+  bookmarks Bookmark[]
+
+  @@map("buzz")
+}
+
+model Hashtag {
+  id     String @id @default(dbgenerated("uuidv7_sub_ms()"))
+  name   String @unique
+  buzzes Buzz[]
+
+  @@map("hashtag")
+}
+
+model Bookmark {
+  id     String @id @default(dbgenerated("uuidv7_sub_ms()"))
+  userId String @map("user_id")
+  buzzId String @map("buzz_id")
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  buzz   Buzz   @relation(fields: [buzzId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, buzzId])
+  @@map("bookmark")
+}
+
+model Image {
+  id         String      @id @default(dbgenerated("uuidv7_sub_ms()"))
+  ownerId    String      @map("owner_id")
+  filename   String      @unique @db.VarChar(50)
+  format     String      @map("format") @db.VarChar(50)
+  size       Int
+  width      Int
+  height     Int
+  uploadedAt DateTime    @default(now()) @map("uploaded_at") @db.Timestamptz
+  owner      User        @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  propic     Profile?    @relation("Propic")
+  cover      Profile?    @relation("Cover")
+  buzzes     BuzzMedia[]
+
+  @@map("image")
+}
+
+model BuzzVote {
+  id      String   @id @default(dbgenerated("uuidv7_sub_ms()"))
+  voterId String   @map("voter_id")
+  buzzId  String   @map("buzz_id")
+  type    VoteType
+  votedAt DateTime @default(now()) @map("voted_at") @db.Timestamptz
+  voter   User     @relation(fields: [voterId], references: [id], onDelete: Cascade)
+  buzz    Buzz     @relation(fields: [buzzId], references: [id], onDelete: Cascade)
+
+  @@unique([voterId, buzzId])
+  @@map("buzz_vote")
+}
+
+model BuzzMedia {
+  id      String @id @default(dbgenerated("uuidv7_sub_ms()"))
+  buzzId  String @map("buzz_id")
+  imageId String @map("image_id")
+  order   Int
+  buzz    Buzz   @relation(fields: [buzzId], references: [id], onDelete: Cascade)
+  image   Image  @relation(fields: [imageId], references: [id], onDelete: Cascade)
+
+  @@map("buzz_media")
+}
+
+model Comment {
+  id              String        @id @default(dbgenerated("uuidv7_sub_ms()"))
+  authorId        String        @map("author_id")
+  buzzId          String        @map("buzz_id")
+  parentCommentId String?       @map("parent_comment_id")
+  content         String        @db.Text
+  createdAt       DateTime      @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt       DateTime?     @map("updated_at") @db.Timestamptz
+  author          User          @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  buzz            Buzz          @relation(fields: [buzzId], references: [id], onDelete: Cascade)
+  parentComment   Comment?      @relation("ParentComment", fields: [parentCommentId], references: [id], onDelete: Cascade)
+  replies         Comment[]     @relation("ParentComment")
+  votes           CommentVote[]
+
+  @@map("comment")
+}
+
+model CommentVote {
+  id        String   @id @default(dbgenerated("uuidv7_sub_ms()"))
+  voterId   String   @map("voter_id")
+  commentId String   @map("comment_id")
+  type      VoteType
+  votedAt   DateTime @default(now()) @map("voted_at") @db.Timestamptz
+  voter     User     @relation(fields: [voterId], references: [id], onDelete: Cascade)
+  comment   Comment  @relation(fields: [commentId], references: [id], onDelete: Cascade)
+
+  @@unique([voterId, commentId])
+  @@map("comment_vote")
+}
+
+view BuzzEngagement {
+  id            String  @unique
+  upvoteCount   Int     @map("upvote_count")
+  downvoteCount Int     @map("downvote_count")
+  voteCount     Int     @map("vote_count")
+  voteBalance   Int     @map("vote_balance")
+  controversy   Decimal @map("controversy")
+
+  @@map("buzz_engagement")
+}
+
+view HashtagEngagement {
+  id              String   @unique
+  name            String
+  usageCount      Int      @map("usage_count")
+  totalUsageCount Int      @map("total_usage_count")
+  firstUsageDate  DateTime @map("first_usage_date")
+  lastUsageDate   DateTime @map("last_usage_date")
+
+  @@map("hashtag_engagement")
+}

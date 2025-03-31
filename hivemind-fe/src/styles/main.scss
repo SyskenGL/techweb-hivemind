@@ -1,0 +1,9 @@
+@use "base";
+@use "components";
+
+@import "@ctrl/ngx-emoji-mart/picker";
+@import "ngx-toastr/toastr";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;

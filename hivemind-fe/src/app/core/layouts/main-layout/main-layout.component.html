@@ -1,0 +1,46 @@
+<div class="flex min-h-screen">
+  <!-- Drawer Overlay -->
+  <div
+    *ngIf="showDrawer"
+    class="fixed inset-0 z-40 cursor-pointer bg-base-100/50"
+    (click)="showDrawer = false"
+  ></div>
+
+  <!-- Drawer Small Screen Button -->
+  <button
+    *ngIf="isSmallScreen && !showDrawer"
+    class="btn btn-circle btn-secondary swap swap-rotate fixed -left-7 bottom-1/2 z-50 opacity-75 before:absolute before:h-12 before:w-16 before:content-['']"
+    (click)="showDrawer = !showDrawer"
+  >
+    <i class="fa-solid fa-chevron-right ml-5"></i>
+  </button>
+
+  <!-- Aside Navigation (Drawer Small Screen) -->
+  <aside
+    class="sticky top-0 flex max-h-screen flex-1 justify-end max-sm:fixed max-sm:left-0 max-sm:z-50 max-sm:h-full max-sm:-translate-x-full"
+    [ngClass]="{ 'pointer-events-none': !showDrawer && isSmallScreen }"
+  >
+    <div
+      [ngClass]="{ 'translate-x-full': showDrawer && isSmallScreen }"
+      class="transform transition-transform duration-300 ease-in-out sm:block"
+    >
+      <hm-navbar-aside-main></hm-navbar-aside-main>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="container max-w-3xl border-x border-base-content/10 will-change-transform">
+    <router-outlet></router-outlet>
+  </main>
+
+  <!-- Aside Content -->
+  <aside class="flex-1">
+    <div
+      class="sticky top-0 flex max-h-screen max-w-lg flex-col gap-5 overflow-y-auto p-8 py-5 scrollbar-none max-lg:hidden"
+    >
+      <hm-card-suggested-users></hm-card-suggested-users>
+      <hm-card-trends></hm-card-trends>
+      <hm-footer-nav-plain [complete]="false" class="sticky top-0 px-3"></hm-footer-nav-plain>
+    </div>
+  </aside>
+</div>

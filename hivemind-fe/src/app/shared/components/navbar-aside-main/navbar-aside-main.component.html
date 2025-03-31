@@ -1,0 +1,110 @@
+<div
+  class="card h-full overflow-auto overflow-x-hidden rounded-none bg-base-100/75 backdrop-blur-lg scrollbar-none"
+>
+  <div class="card-body flex flex-col justify-between max-xl:px-5">
+    <div class="mb-24 flex flex-col gap-5">
+      <!-- Logo -->
+      <div class="mb-5 flex flex-row items-center justify-between max-xl:ml-1 xl:ml-2">
+        <a #logo routerLink="/home">
+          <svg viewBox="0 0 749 852" xmlns="http://www.w3.org/2000/svg" class="h-12 fill-current">
+            <path
+              d="M363.65 1.44021C357.384 2.90688 352.05 5.57354 327.384 19.9735C316.45 26.3735 289.117 42.1069 266.717 54.9069C244.317 67.7069 203.917 91.0402 176.717 106.64C149.65 122.24 112.05 143.84 93.3836 154.64C20.8503 196.374 12.5836 201.307 7.38359 206.64C2.71692 211.44 2.05025 212.907 1.25025 220.907C-0.349745 234.774 -0.0830785 301.174 1.51692 306.907C2.45025 310.507 3.65026 311.974 5.38359 311.974C6.71692 311.974 13.5169 308.774 20.3169 304.774C27.1169 300.774 62.7169 280.374 99.3836 259.174C213.784 193.307 251.117 171.84 336.717 122.24C359.784 108.907 369.917 103.974 374.717 103.974C379.65 103.974 385.25 106.774 404.05 118.374C411.784 123.174 426.717 131.84 437.384 137.707C460.584 150.507 463.517 152.907 465.25 161.574C466.184 165.974 466.717 218.64 466.717 319.707C466.717 437.44 467.117 471.974 468.45 474.507C470.317 477.974 491.117 490.907 524.717 509.307C549.25 522.774 558.584 527.174 559.917 525.84C560.317 525.44 560.85 437.04 561.117 329.574C561.384 186.374 561.117 131.307 560.05 123.974C558.05 111.707 553.65 103.174 544.05 93.3069C538.184 87.1735 530.984 82.5069 508.717 69.9735C493.384 61.3069 461.117 42.9069 437.117 29.1735C386.45 -0.159789 380.184 -2.42646 363.65 1.44021Z"
+            />
+            <path
+              d="M656.984 160.907C653.784 166.107 653.384 188.907 653.384 377.707C653.384 598.774 654.051 582.774 644.984 589.707C642.584 591.44 634.451 596.507 626.717 600.907C618.984 605.307 604.584 613.574 594.717 619.307C563.784 637.174 562.851 637.44 547.517 629.307C522.184 615.84 387.384 538.24 340.717 510.107C287.517 478.107 276.851 476.24 251.117 493.84C245.384 497.707 231.117 506.64 219.384 513.707C190.851 530.907 190.184 531.307 192.317 532.907C193.251 533.574 197.651 535.974 202.051 538.24C206.451 540.507 217.251 546.507 226.051 551.574C234.851 556.64 260.317 571.307 282.717 584.24C305.117 597.04 335.651 614.64 350.717 623.307C502.317 710.774 539.384 731.707 546.717 734.774C556.051 738.507 568.584 738.64 578.717 735.04C585.384 732.64 601.384 723.84 649.384 695.974C657.784 691.04 676.984 679.974 692.051 671.307C724.851 652.507 732.317 647.707 736.851 642.374C741.117 637.174 744.851 629.174 746.584 621.307C747.517 617.44 748.051 545.174 748.051 414.907C748.051 194.507 748.717 210.507 739.784 203.707C737.384 201.974 727.251 195.84 717.384 190.374C707.517 184.774 694.051 177.04 687.384 173.307C670.184 163.307 658.451 158.507 656.984 160.907Z"
+            />
+            <path
+              d="M356.717 221.84C347.917 226.507 327.517 237.84 311.384 247.307C295.25 256.64 275.784 267.84 268.05 272.24C260.317 276.774 237.25 290.107 216.717 301.974C181.784 322.107 140.45 345.84 96.7171 370.907C77.6504 381.84 54.7171 395.174 32.0504 408.374C12.0504 419.974 4.85043 429.307 1.5171 447.44C-0.482902 457.707 -0.482902 606.907 1.38376 618.507C3.1171 628.774 6.45043 635.707 13.5171 643.307C20.1838 650.507 19.7838 650.24 84.0504 687.307C145.917 722.907 159.784 730.907 211.384 760.774C292.85 807.84 356.317 843.974 365.25 848.64C371.65 851.84 373.117 852.107 377.25 850.774C383.117 849.04 465.65 802.374 466.184 800.64C466.45 799.84 458.717 794.774 449.117 789.307C439.517 783.84 423.784 774.774 414.184 769.174C404.584 763.574 380.184 749.574 360.05 737.974C339.917 726.374 316.45 712.907 308.05 707.974C299.65 703.04 284.05 694.107 273.384 687.974C262.717 681.84 245.117 671.707 234.05 665.307C223.117 658.907 199.65 645.307 182.05 635.307C95.1171 585.44 101.917 589.574 97.2504 582.907C94.3171 578.507 94.3171 578.374 94.5838 532.24L94.8504 485.974L98.4504 480.64C103.517 473.44 110.184 468.64 136.05 454.107C162.984 439.04 224.584 403.574 282.717 369.974C306.584 356.107 332.317 341.307 340.05 336.907C358.717 326.374 367.917 320.107 371.25 315.574C373.917 311.974 374.05 309.707 374.45 263.84C374.85 237.307 374.45 215.174 373.917 214.64C373.25 213.974 365.784 217.04 356.717 221.84Z"
+            />
+          </svg>
+        </a>
+        <hm-toggle-switch-theme class="max-xl:hidden"></hm-toggle-switch-theme>
+      </div>
+
+      <!-- Home -->
+      <a
+        class="btn btn-ghost flex justify-center font-heading text-lg transition-transform duration-300 max-xl:btn-circle hover:scale-110 xl:w-64 xl:justify-start"
+        routerLink="/home"
+        routerLinkActive="scale-110"
+      >
+        <div class="flex items-start xl:w-10">
+          <i class="fa-regular fa-square" routerLinkActive="fa-solid fa-home xl:-ml-1"></i>
+        </div>
+        <span class="font-normal max-xl:hidden" routerLinkActive="!font-bold">Home</span>
+      </a>
+
+      <!-- Bookmarks -->
+      <button
+        class="btn btn-ghost flex justify-center font-heading text-lg transition-transform duration-300 max-xl:btn-circle hover:scale-110 xl:w-64 xl:justify-start"
+        routerLink="/bookmarks"
+        routerLinkActive="scale-110"
+      >
+        <div class="flex items-start xl:w-10">
+          <i class="fa-regular fa-bookmark" routerLinkActive="fa-solid"></i>
+        </div>
+        <span class="font-normal max-xl:hidden" routerLinkActive="!font-bold">Bookmarks</span>
+      </button>
+
+      <!-- Explore -->
+      <button
+        class="btn btn-ghost flex justify-center font-heading text-lg transition-transform duration-300 max-xl:btn-circle hover:scale-110 xl:w-64 xl:justify-start"
+        routerLink="/explore"
+        routerLinkActive="scale-110"
+      >
+        <div class="flex items-start xl:w-10">
+          <i class="fa-solid fa-magnifying-glass" routerLinkActive=" fa-magnifying-glass-plus"></i>
+        </div>
+        <span class="font-normal max-xl:hidden" routerLinkActive="!font-bold">Explore</span>
+      </button>
+
+      <!-- Profile -->
+      <ng-container *ngIf="currentUser">
+        <button
+          class="btn btn-ghost flex justify-center font-heading text-lg transition-transform duration-300 max-xl:btn-circle hover:scale-110 xl:w-64 xl:justify-start"
+          [routerLink]="'/user/' + currentUser.username"
+          routerLinkActive="scale-110"
+        >
+          <div class="flex items-start xl:w-10">
+            <i class="fa-regular fa-user" routerLinkActive="fa-solid"></i>
+          </div>
+          <span class="font-normal max-xl:hidden" routerLinkActive="!font-bold">Profile</span>
+        </button>
+      </ng-container>
+
+      <!-- Create Buzz -->
+      <button
+        class="btn btn-secondary mt-3 font-heading text-lg max-xl:btn-circle xl:w-64"
+        routerLink="/buzzes/create"
+      >
+        <div class="xl:hidden"><i class="fa-solid fa-feather"></i></div>
+        <span class="max-xl:hidden">Create</span>
+      </button>
+    </div>
+
+    <!-- Profile Large -->
+    <ng-container *ngIf="currentUser">
+      <div class="flex items-center justify-between max-xl:hidden">
+        <div class="truncate">
+          <hm-molecule-user-byline [user]="currentUser"></hm-molecule-user-byline>
+        </div>
+        <!-- Logout -->
+        <button class="btn btn-circle btn-ghost ml-3 text-xl" (click)="onSignOut()">
+          <i class="fa-solid fa-arrow-right-from-bracket"></i>
+        </button>
+      </div>
+
+      <!-- Profile Small -->
+      <div class="flex flex-col items-center justify-between gap-5 xl:hidden">
+        <div class="h-14 w-14">
+          <hm-figure-propic-popover
+            [username]="currentUser.username"
+            [propicId]="currentUser.profile.propicId"
+          ></hm-figure-propic-popover>
+        </div>
+        <button class="btn btn-circle btn-ghost text-xl" (click)="onSignOut()">
+          <i class="fa-solid fa-arrow-right-from-bracket"></i>
+        </button>
+      </div>
+    </ng-container>
+  </div>
+</div>

@@ -1,0 +1,62 @@
+<!-- Post Comment Form -->
+<div class="border-b border-base-content/10">
+  <div #container class="card">
+    <div class="card-body pb-5">
+      <div class="flex items-start gap-4">
+        <!-- Avatar -->
+        <div class="h-14 w-14">
+          <ng-container *ngIf="currentUser">
+            <hm-figure-propic-popover
+              [username]="currentUser.username"
+              [propicId]="currentUser.profile.propicId"
+            ></hm-figure-propic-popover>
+          </ng-container>
+          <ng-container *ngIf="!currentUser">
+            <hm-figure-propic [propicId]="undefined"></hm-figure-propic>
+          </ng-container>
+        </div>
+        <div class="flex-1">
+          <hm-form-comment
+            [buzz]="buzz"
+            (commentPosted)="onCommentPosted($event)"
+          ></hm-form-comment>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Infinite Scroll Comments -->
+<hm-infinite-scroll-window
+  [items]="comments"
+  [infiniteScrollDisabled]="infiniteScrollDisabled"
+  [showError]="commentsFetchFailed"
+  [showLoading]="fetchingComments"
+  [overscan]="25"
+  [estimatedSize]="300"
+  (loadMore)="fetchComments()"
+>
+  <ng-template #itemTemplate let-item let-index="index">
+    <div class="border-b border-base-content/10">
+      <hm-card-comment
+        *ngIf="item"
+        [buzz]="buzz"
+        [comment]="item"
+        [clamp]="true"
+        (commentDeleted)="onCommentDeleted(index)"
+      ></hm-card-comment>
+    </div>
+  </ng-template>
+
+  <ng-template #loadingTemplate>
+    <div class="flex justify-center py-12">
+      <span class="loading loading-ring loading-lg text-base-content-muted"></span>
+    </div>
+  </ng-template>
+
+  <ng-template #errorTemplate>
+    <div class="py-12">
+      <hm-button-retry (retry)="fetchComments(true)"></hm-button-retry>
+    </div>
+  </ng-template>
+</hm-infinite-scroll-window>

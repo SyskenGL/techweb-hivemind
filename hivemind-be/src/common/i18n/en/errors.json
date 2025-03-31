@@ -1,0 +1,134 @@
+{
+  "auth": {
+    "invalid-credentials": {
+      "message": "Provided credentials are incorrect",
+      "code": "hm-auth-e001"
+    },
+    "invalid-jwt": {
+      "message": "Provided token is invalid or malformed",
+      "code": "hm-auth-e002"
+    },
+    "expired-jwt": {
+      "message": "Provided token has expired",
+      "code": "hm-auth-e003"
+    },
+    "revoked-jwt": {
+      "message": "Provided token has been revoked",
+      "code": "hm-auth-e004"
+    },
+    "unauthorized": {
+      "message": "User lacks the necessary permissions to perform this action",
+      "code": "hm-auth-e005"
+    }
+  },
+  "users": {
+    "not-found": {
+      "message": "User [{0.userIdOrUsername}] not found",
+      "code": "hm-user-e001"
+    },
+    "username-already-exists": {
+      "message": "Username [{0.username}] is already taken",
+      "code": "hm-user-e002"
+    },
+    "email-already-exists": {
+      "message": "Email [{0.email}] is already in use",
+      "code": "hm-user-e003"
+    },
+    "email-not-exists": {
+      "message": "Email [{0.email}] does not exist",
+      "code": "hm-user-e004"
+    },
+    "self-following": {
+      "message": "User cannot follow themselves",
+      "code": "hm-user-e005"
+    },
+    "already-following": {
+      "message": "User [{0.userIdOrUsername}] is already being followed",
+      "code": "hm-user-e006"
+    },
+    "self-unfollowing": {
+      "message": "User cannot unfollow themselves",
+      "code": "hm-user-e007"
+    },
+    "not-following": {
+      "message": "User [{0.userIdOrUsername}] is not being followed",
+      "code": "hm-user-e008"
+    }
+  },
+  "media": {
+    "not-found": {
+      "message": "Media [{0.type}|{1.mediaId}] not found",
+      "code": "hm-media-e001"
+    },
+    "invalid-media-type": {
+      "message": "Invalid media type [{0.type}]",
+      "code": "hm-media-e002"
+    },
+    "invalid-metadata": {
+      "message": "Invalid image metadata; the image may be corrupted or unsupported",
+      "code": "hm-media-e003"
+    }
+  },
+  "buzzes": {
+    "not-found": {
+      "message": "Buzz [{0.buzzId}] not found",
+      "code": "hm-buzz-e001"
+    },
+    "not-voted": {
+      "message": "Buzz [{0.buzzId}] has no vote to remove",
+      "code": "hm-buzz-e002"
+    },
+    "not-bookmarked": {
+      "message": "Buzz [{0.buzzId}] has no bookmark to remove",
+      "code": "hm-buzz-e003"
+    },
+    "criterion-parameters": {
+      "message": "Criterion [{0.criterion}] requires additional values to perform the search",
+      "code": "hm-buzz-e004"
+    },
+    "self-vote": {
+      "message": "User cannot vote on their buzz",
+      "code": "hm-buzz-e005"
+    }
+  },
+  "comments": {
+    "not-found": {
+      "message": "Comment [{0.commentId}] not found",
+      "code": "hm-comment-e001"
+    },
+    "not-same-buzz": {
+      "message": "Parent comment [{0.parentCommentId}] belongs to a different buzz",
+      "code": "hm-comment-e002"
+    },
+    "reply-depth": {
+      "message": "Cannot reply to another reply",
+      "code": "hm-comment-e003"
+    },
+    "unvoted": {
+      "message": "Comment [{0.commentId}] has not been voted on",
+      "code": "hm-comment-e004"
+    },
+    "self-vote": {
+      "message": "User cannot vote on their comment",
+      "code": "hm-comment-e005"
+    }
+  },
+  "general": {
+    "internal": {
+      "message": "An unexpected error occurred while processing the request",
+      "code": "hm-general-e001"
+    },
+    "bad-request": {
+      "message": "Request is malformed or missing a required parameter: [{0.constraints}]",
+      "code": "hm-general-e002"
+    },
+    "not-found": {
+      "message": "Requested route could not be found",
+      "code": "hm-general-e003"
+    },
+    "invalid-cursor": {
+      "message": "Provided cursor is invalid or malformed",
+      "code": "hm-general-e004"
+    }
+  }
+}

@@ -1,0 +1,303 @@
+/* @font-face declarations for Poppins */
+
+@font-face {
+  font-family: "Poppins";
+  src:
+    url("/fonts/Poppins/Poppins-Bold.woff2") format("woff2"),
+    url("/fonts/Poppins/Poppins-Bold.woff") format("woff");
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Poppins";
+  src:
+    url("/fonts/Poppins/Poppins-BlackItalic.woff2") format("woff2"),
+    url("/fonts/Poppins/Poppins-BlackItalic.woff") format("woff");
+  font-weight: 900;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Poppins";
+  src:
+    url("/fonts/Poppins/Poppins-Black.woff2") format("woff2"),
+    url("/fonts/Poppins/Poppins-Black.woff") format("woff");
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Poppins";
+  src:
+    url("/fonts/Poppins/Poppins-BoldItalic.woff2") format("woff2"),
+    url("/fonts/Poppins/Poppins-BoldItalic.woff") format("woff");
+  font-weight: bold;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Poppins";
+  src:
+    url("/fonts/Poppins/Poppins-ExtraBold.woff2") format("woff2"),
+    url("/fonts/Poppins/Poppins-ExtraBold.woff") format("woff");
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Poppins";
+  src:
+    url("/fonts/Poppins/Poppins-ExtraBoldItalic.woff2") format("woff2"),
+    url("/fonts/Poppins/Poppins-ExtraBoldItalic.woff") format("woff");
+  font-weight: bold;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Poppins";
+  src:
+    url("/fonts/Poppins/Poppins-ExtraLight.woff2") format("woff2"),
+    url("/fonts/Poppins/Poppins-ExtraLight.woff") format("woff");
+  font-weight: 200;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Poppins";
+  src:
+    url("/fonts/Poppins/Poppins-ExtraLightItalic.woff2") format("woff2"),
+    url("/fonts/Poppins/Poppins-ExtraLightItalic.woff") format("woff");
+  font-weight: 200;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Poppins";
+  src:
+    url("/fonts/Poppins/Poppins-Italic.woff2") format("woff2"),
+    url("/fonts/Poppins/Poppins-Italic.woff") format("woff");
+  font-weight: normal;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Poppins";
+  src:
+    url("/fonts/Poppins/Poppins-Light.woff2") format("woff2"),
+    url("/fonts/Poppins/Poppins-Light.woff") format("woff");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Poppins";
+  src:
+    url("/fonts/Poppins/Poppins-LightItalic.woff2") format("woff2"),
+    url("/fonts/Poppins/Poppins-LightItalic.woff") format("woff");
+  font-weight: 300;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Poppins";
+  src:
+    url("/fonts/Poppins/Poppins-Medium.woff2") format("woff2"),
+    url("/fonts/Poppins/Poppins-Medium.woff") format("woff");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Poppins";
+  src:
+    url("/fonts/Poppins/Poppins-MediumItalic.woff2") format("woff2"),
+    url("/fonts/Poppins/Poppins-MediumItalic.woff") format("woff");
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Poppins";
+  src:
+    url("/fonts/Poppins/Poppins-SemiBold.woff2") format("woff2"),
+    url("/fonts/Poppins/Poppins-SemiBold.woff") format("woff");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Poppins";
+  src:
+    url("/fonts/Poppins/Poppins-Regular.woff2") format("woff2"),
+    url("/fonts/Poppins/Poppins-Regular.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Poppins";
+  src:
+    url("/fonts/Poppins/Poppins-SemiBoldItalic.woff2") format("woff2"),
+    url("/fonts/Poppins/Poppins-SemiBoldItalic.woff") format("woff");
+  font-weight: 600;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Poppins";
+  src:
+    url("/fonts/Poppins/Poppins-Thin.woff2") format("woff2"),
+    url("/fonts/Poppins/Poppins-Thin.woff") format("woff");
+  font-weight: 100;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Poppins";
+  src:
+    url("/fonts/Poppins/Poppins-ThinItalic.woff2") format("woff2"),
+    url("/fonts/Poppins/Poppins-ThinItalic.woff") format("woff");
+  font-weight: 100;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* @font-face declarations for OpenSans */
+
+@font-face {
+  font-family: "Open Sans";
+  src:
+    url("/fonts/OpenSans/OpenSans-BoldItalic.woff2") format("woff2"),
+    url("/fonts/OpenSans/OpenSans-BoldItalic.woff") format("woff");
+  font-weight: bold;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Open Sans";
+  src:
+    url("/fonts/OpenSans/OpenSans-Italic.woff2") format("woff2"),
+    url("/fonts/OpenSans/OpenSans-Italic.woff") format("woff");
+  font-weight: normal;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Open Sans";
+  src:
+    url("/fonts/OpenSans/OpenSans-Bold.woff2") format("woff2"),
+    url("/fonts/OpenSans/OpenSans-Bold.woff") format("woff");
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Open Sans";
+  src:
+    url("/fonts/OpenSans/OpenSans-ExtraBoldItalic.woff2") format("woff2"),
+    url("/fonts/OpenSans/OpenSans-ExtraBoldItalic.woff") format("woff");
+  font-weight: bold;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Open Sans";
+  src:
+    url("/fonts/OpenSans/OpenSans-ExtraBold.woff2") format("woff2"),
+    url("/fonts/OpenSans/OpenSans-ExtraBold.woff") format("woff");
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Open Sans";
+  src:
+    url("/fonts/OpenSans/OpenSans-Light.woff2") format("woff2"),
+    url("/fonts/OpenSans/OpenSans-Light.woff") format("woff");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Open Sans";
+  src:
+    url("/fonts/OpenSans/OpenSans-Medium.woff2") format("woff2"),
+    url("/fonts/OpenSans/OpenSans-Medium.woff") format("woff");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Open Sans";
+  src:
+    url("/fonts/OpenSans/OpenSans-LightItalic.woff2") format("woff2"),
+    url("/fonts/OpenSans/OpenSans-LightItalic.woff") format("woff");
+  font-weight: 300;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Open Sans";
+  src:
+    url("/fonts/OpenSans/OpenSans-MediumItalic.woff2") format("woff2"),
+    url("/fonts/OpenSans/OpenSans-MediumItalic.woff") format("woff");
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Open Sans";
+  src:
+    url("/fonts/OpenSans/OpenSans-SemiBold.woff2") format("woff2"),
+    url("/fonts/OpenSans/OpenSans-SemiBold.woff") format("woff");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Open Sans";
+  src:
+    url("/fonts/OpenSans/OpenSans-Regular.woff2") format("woff2"),
+    url("/fonts/OpenSans/OpenSans-Regular.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Open Sans";
+  src:
+    url("/fonts/OpenSans/OpenSans-SemiBoldItalic.woff2") format("woff2"),
+    url("/fonts/OpenSans/OpenSans-SemiBoldItalic.woff") format("woff");
+  font-weight: 600;
+  font-style: italic;
+  font-display: swap;
+}

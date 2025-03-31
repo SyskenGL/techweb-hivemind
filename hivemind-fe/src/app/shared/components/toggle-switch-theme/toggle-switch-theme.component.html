@@ -1,0 +1,14 @@
+<label class="grid place-items-center text-base-100">
+  <input
+    type="checkbox"
+    class="theme-controller toggle col-span-2 col-start-1 row-start-1 bg-base-content hover:bg-base-content"
+    [checked]="isDarkTheme()"
+    (change)="toggleTheme()"
+  />
+  <div class="col-start-1 row-start-1">
+    <i class="fa-solid fa-sun fa-2xs"></i>
+  </div>
+  <div class="col-start-2 row-start-1">
+    <i class="fa-solid fa-moon fa-sm"></i>
+  </div>
+</label>

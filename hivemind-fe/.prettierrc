@@ -1,0 +1,32 @@
+{
+  "printWidth": 80,
+  "tabWidth": 2,
+  "useTabs": false,
+  "semi": true,
+  "singleQuote": true,
+  "trailingComma": "none",
+  "bracketSpacing": true,
+  "arrowParens": "always",
+  "htmlWhitespaceSensitivity": "ignore",
+  "endOfLine": "lf",
+  "overrides": [
+    {
+      "files": "*.scss",
+      "options": {
+        "singleQuote": false,
+        "tabWidth": 2,
+        "bracketSpacing": true
+      }
+    },
+    {
+      "files": "*.html",
+      "options": {
+        "parser": "angular",
+        "printWidth": 100,
+        "tabWidth": 2,
+        "htmlWhitespaceSensitivity": "ignore"
+      }
+    }
+  ],
+  "plugins": ["prettier-plugin-tailwindcss"]
+}

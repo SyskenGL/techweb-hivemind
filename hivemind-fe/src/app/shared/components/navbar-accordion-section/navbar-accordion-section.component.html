@@ -1,0 +1,12 @@
+<nav class="collapse collapse-arrow rounded-none border-b-2 border-base-content bg-base-100">
+  <input #checkbox type="checkbox" />
+  <div class="collapse-title font-semibold text-base-content" [innerHTML]="title"></div>
+  <div class="collapse-content">
+    <hm-navbar-section
+      class="text-xs"
+      [sections]="sections"
+      [currentSectionIndex]="currentSectionIndex"
+      (scrollToSection)="onSectionClick($event)"
+    ></hm-navbar-section>
+  </div>
+</nav>

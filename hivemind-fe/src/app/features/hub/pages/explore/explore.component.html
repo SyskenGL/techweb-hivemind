@@ -1,0 +1,96 @@
+<!-- Profile Header -->
+<hm-header-sticky-template [backPageButton]="true">
+  <ng-template #contentNextToBackPageButton>
+    <div class="flex w-full items-center gap-7 pt-2">
+      <!-- Title -->
+      <h1 class="text-2xl font-bold">Explore</h1>
+
+      <!-- Search Bar -->
+      <div class="w-full max-sm:hidden">
+        <ng-container *ngTemplateOutlet="search; context: { type: 'header' }"></ng-container>
+      </div>
+    </div>
+  </ng-template>
+
+  <!-- Tabs -->
+  <ng-template #contentMain>
+    <!-- Search Bar -->
+    <div class="w-full px-8 py-2 sm:hidden">
+      <ng-container *ngTemplateOutlet="search; context: { type: 'main' }"></ng-container>
+    </div>
+
+    <hm-tab-underline-selector
+      [tabs]="[{ label: 'Buzzes' }, { label: 'People' }]"
+      [activeTabIndex]="activeTabIndex"
+      (tabChanged)="onTabChanged($event)"
+    ></hm-tab-underline-selector>
+  </ng-template>
+</hm-header-sticky-template>
+
+<!-- Section Buzzes -->
+<hm-section-explore-buzzes
+  *ngIf="activeTabIndex === 0"
+  [searchTerm]="searchTerm"
+></hm-section-explore-buzzes>
+
+<!-- Section People -->
+<hm-section-explore-people
+  *ngIf="activeTabIndex === 1"
+  [searchTerm]="searchTerm"
+></hm-section-explore-people>
+
+<ng-template #search let-type="type">
+  <div class="dropdown dropdown-end w-full">
+    <!-- Search Input -->
+    <div class="form-control">
+      <div class="flabel-container gap-2 border-base-content/10 pr-2">
+        <input
+          (keydown.enter)="onSearch()"
+          [formControl]="searchControl"
+          [id]="'search-' + type"
+          class="flabel-input peer"
+          placeholder="Search"
+          autocomplete="off"
+          maxlength="75"
+        />
+        <label [for]="'search-' + type" class="flabel bg-transparent">Search</label>
+        <button
+          [ngClass]="{ invisible: !searchControl.value }"
+          type="button"
+          class="btn-circle btn-ghost btn-sm text-base-content"
+          (click)="searchControl.setValue('')"
+        >
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Recent Searches -->
+    <div
+      *ngIf="recentSearches.length > 0"
+      tabindex="0"
+      class="menu dropdown-content z-[1] flex w-full flex-col gap-2 rounded-box bg-base-100 p-2 shadow drop-shadow-card"
+    >
+      <div class="flex items-center justify-between">
+        <h1 class="p-2 text-xl font-bold">Recent Searches</h1>
+        <button class="btn btn-ghost text-accent" (click)="clearHistory()">Clear all</button>
+      </div>
+      <ul class="w-full">
+        <li *ngFor="let recentSearch of recentSearches; let i = index">
+          <a class="flex w-full justify-between" (click)="onRecentSearch(recentSearch)">
+            <span class="block w-full truncate">
+              <i class="fa-solid fa-magnifying-glass mr-3"></i>
+              {{ recentSearch }}
+            </span>
+            <button
+              class="btn btn-circle btn-ghost btn-sm text-accent"
+              (click)="clearSearch(i, $event)"
+            >
+              <i class="fa-solid fa-xmark"></i>
+            </button>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</ng-template>

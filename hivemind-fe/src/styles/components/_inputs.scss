@@ -1,0 +1,109 @@
+@layer components {
+  /* Floating Label Input */
+  .flabel-container {
+    @apply relative;
+    @apply flex items-center;
+    @apply input input-bordered;
+  }
+  .flabel-input {
+    @apply grow;
+    @apply placeholder-transparent;
+  }
+  .flabel {
+    @apply absolute -top-2.5 left-2;
+    @apply px-1 py-0;
+    @apply text-xs text-base-content;
+    @apply bg-base-100 text-opacity-50;
+    @apply pointer-events-none rounded-b-sm transition-all;
+    @apply peer-placeholder-shown:left-3 peer-placeholder-shown:top-3.5 peer-placeholder-shown:bg-transparent peer-placeholder-shown:text-sm;
+  }
+
+  /* Floating Label Textarea */
+  .multi-flabel-container {
+    @apply relative;
+    @apply flex items-center;
+    @apply textarea textarea-bordered;
+    &:focus-within {
+      box-shadow: none;
+      border-color: var(--fallback-bc, oklch(var(--bc) / 0.2));
+      outline-style: solid;
+      outline-width: 2px;
+      outline-offset: 2px;
+      outline-color: var(--fallback-bc, oklch(var(--bc) / 0.2));
+    }
+  }
+  .multi-flabel-input {
+    @apply grow;
+    @apply placeholder-transparent;
+    @apply bg-transparent py-1 focus-within:outline-none;
+  }
+  .multi-flabel {
+    @apply absolute -top-2.5 left-2;
+    @apply px-1 py-0;
+    @apply text-xs text-base-content;
+    @apply bg-base-100 text-opacity-50;
+    @apply pointer-events-none rounded-b-sm transition-all;
+    @apply peer-placeholder-shown:left-3 peer-placeholder-shown:top-3.5 peer-placeholder-shown:bg-transparent peer-placeholder-shown:text-sm;
+  }
+
+  /* Emoji Picker Customization */
+  .emoji-mart {
+    border-radius: var(--rounded-btn) !important;
+    border-color: oklch(var(--bc) / 0.1) !important;
+    color: oklch(var(--bc)) !important;
+    background-color: oklch(var(--b1)) !important;
+    @apply select-none p-2;
+
+    .emoji-mart-category-label > span {
+      @apply bg-base-100 py-4 font-semibold;
+    }
+
+    .emoji-mart-search {
+      & > input {
+        @apply input input-sm input-bordered mt-5;
+        &::placeholder {
+          @apply text-base-content-muted;
+        }
+      }
+    }
+
+    .emoji-mart-bar {
+      @apply border-base-content/10;
+      & svg {
+        @apply pl-1;
+      }
+      & .emoji-mart-anchor-bar {
+        @apply rounded-btn;
+      }
+    }
+
+    .emoji-mart-emoji {
+      &::before {
+        content: none !important;
+      }
+      & > span {
+        cursor: pointer !important;
+      }
+    }
+
+    .emoji-mart-anchor {
+      @apply cursor-pointer text-base-content-muted;
+      &:hover {
+        @apply text-base-content;
+      }
+    }
+
+    .emoji-mart-scroll {
+      @apply my-1;
+    }
+
+    .emoji-mart-preview-data {
+      @apply ml-3;
+    }
+  }
+
+  /* Button Ghost */
+  .btn-ghost {
+    @apply hover:bg-base-200;
+  }
+}

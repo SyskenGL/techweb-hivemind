@@ -1,0 +1,243 @@
+<div class="card max-w-sm select-none">
+  <div class="card-body p-0">
+    <!-- Sign-up Form Header -->
+    <div class="card-title mb-5 flex-col items-start">
+      <h1 class="text-4xl font-extrabold">Sign Up</h1>
+      <p class="text-base font-light">
+        Create an account and step into a world of new possibilities. Your journey begins here.
+      </p>
+    </div>
+
+    <!-- Sign-up Form Body -->
+    <form [formGroup]="signUpForm" (ngSubmit)="onSignUp()" class="space-y-5">
+      <!-- FullName Input -->
+      <div class="form-control">
+        <div
+          class="flabel-container border-base-content/10"
+          [ngClass]="{ 'border-error focus-within:border-error': fullNameError }"
+        >
+          <input
+            id="fullName"
+            type="text"
+            class="flabel-input peer"
+            placeholder="Full Name"
+            formControlName="fullName"
+            maxlength="70"
+          />
+          <label for="fullName" class="flabel" [ngClass]="{ 'text-error': fullNameError }">
+            Full Name
+          </label>
+          <i *ngIf="fullNameError" class="fa-solid fa-circle-xmark pl-3 text-error"></i>
+        </div>
+        <p
+          *ngIf="fullNameError"
+          class="label label-text-alt pb-0 text-error"
+          [innerText]="fullNameError"
+        ></p>
+      </div>
+
+      <!-- Birthdate Input -->
+      <div class="form-control">
+        <div
+          class="flabel-container border-base-content/10"
+          [ngClass]="{
+            'border-error focus-within:border-error': birthdateError,
+            'gap-2 pr-2': birthdate.type === 'date'
+          }"
+        >
+          <input
+            #birthdate
+            id="birthdate"
+            type="text"
+            class="flabel-input peer"
+            placeholder="Birthdate"
+            formControlName="birthdate"
+            (focus)="birthdate.type = 'date'"
+            (blur)="birthdate.type = 'text'"
+          />
+          <label for="birthdate" class="flabel" [ngClass]="{ 'text-error': birthdateError }">
+            Birthdate
+          </label>
+          <i
+            *ngIf="birthdateError && birthdate.type !== 'date'"
+            class="fa-solid fa-circle-xmark pl-3 text-error"
+          ></i>
+          <button
+            *ngIf="birthdate.type === 'date'"
+            type="button"
+            class="btn-circle btn-ghost btn-sm text-base-content"
+            (focus)="birthdate.type = 'date'"
+            (blur)="birthdate.type = 'text'"
+            (click)="birthdate.showPicker()"
+          >
+            <i class="fa-regular fa-calendar"></i>
+          </button>
+        </div>
+        <p
+          *ngIf="birthdateError"
+          class="label label-text-alt pb-0 text-error"
+          [innerText]="birthdateError"
+        ></p>
+      </div>
+
+      <!-- E-mail Input -->
+      <div class="form-control">
+        <div
+          class="flabel-container border-base-content/10"
+          [ngClass]="{ 'border-error focus-within:border-error': emailError }"
+        >
+          <input
+            id="email"
+            type="email"
+            class="flabel-input peer lowercase"
+            placeholder="E-mail"
+            formControlName="email"
+          />
+          <label for="email" class="flabel" [ngClass]="{ 'text-error': emailError }">E-mail</label>
+          <i *ngIf="emailError" class="fa-solid fa-circle-xmark pl-3 text-error"></i>
+          <i *ngIf="email.valid" class="fa-solid fa-circle-check text-success"></i>
+          <span *ngIf="email.hasError('pending')" class="loading loading-spinner loading-sm"></span>
+        </div>
+        <p
+          *ngIf="emailError"
+          class="label label-text-alt pb-0 text-error"
+          [innerText]="emailError"
+        ></p>
+      </div>
+
+      <!-- Username Input -->
+      <div class="form-control">
+        <div
+          class="flabel-container border-base-content/10"
+          [ngClass]="{ 'border-error focus-within:border-error': usernameError }"
+        >
+          <input
+            id="username"
+            type="text"
+            class="flabel-input peer lowercase"
+            placeholder="Username"
+            formControlName="username"
+            maxlength="20"
+          />
+          <label for="username" class="flabel" [ngClass]="{ 'text-error': usernameError }">
+            Username
+          </label>
+          <i *ngIf="usernameError" class="fa-solid fa-circle-xmark pl-3 text-error"></i>
+          <i *ngIf="username.valid" class="fa-solid fa-circle-check text-success"></i>
+          <span
+            *ngIf="username.hasError('pending')"
+            class="loading loading-spinner loading-sm"
+          ></span>
+        </div>
+        <p
+          *ngIf="usernameError"
+          class="label label-text-alt justify-normal gap-1.5 pb-0 text-error"
+          [innerText]="usernameError"
+        >
+          <span
+            *ngIf="username.hasError('username')"
+            class="tooltip-helper tooltip tooltip-bottom"
+            [attr.data-tip]="
+              'Username can only contain letters, numbers, dots (.), and underscores (_). Consecutive dots or underscores, as well as usernames made up entirely of these characters, are not allowed.'
+            "
+          >
+            <i class="fa-regular fa-circle-question cursor-help"></i>
+          </span>
+        </p>
+      </div>
+
+      <!-- Password Input -->
+      <div class="form-control">
+        <div
+          class="flabel-container gap-2 border-base-content/10 pr-2"
+          [ngClass]="{ 'border-error focus-within:border-error': passwordError }"
+        >
+          <input
+            id="password"
+            [type]="showPassword ? 'text' : 'password'"
+            class="flabel-input peer"
+            placeholder="Password"
+            formControlName="password"
+            autocomplete="off"
+            (focus)="showPasswordRules = true"
+            (blur)="showPasswordRules = false"
+          />
+          <label for="password" class="flabel" [ngClass]="{ 'text-error': passwordError }">
+            Password
+          </label>
+          <button
+            type="button"
+            class="btn-circle btn-ghost btn-sm text-base-content"
+            (click)="showPassword = !showPassword"
+            (focus)="showPasswordRules = true"
+            (blur)="showPasswordRules = false"
+          >
+            <i [ngClass]="showPassword ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye'"></i>
+          </button>
+        </div>
+        <p
+          *ngIf="passwordError && !showPasswordRules"
+          class="label label-text-alt pb-0 text-error"
+          [innerText]="passwordError"
+        ></p>
+      </div>
+
+      <!-- Password criterion List -->
+      <div *ngIf="showPasswordRules" class="px-4" [@FadeInOut]>
+        <ul class="space-y-2.5">
+          <ng-container *ngFor="let rule of passwordRules">
+            <li class="flex items-center" [@FadeInOut]>
+              <span class="text-xs">
+                <i class="fa-solid fa-times-circle mr-1.5 text-error"></i>
+                {{ rule }}
+              </span>
+            </li>
+          </ng-container>
+        </ul>
+      </div>
+
+      <!-- Terms And Condition Checkbox  -->
+      <div class="flex items-center">
+        <input id="tos" type="checkbox" class="checkbox checkbox-xs" formControlName="tos" />
+        <label for="tos" class="label-text ml-3 cursor-pointer">
+          I agree with the
+          <a routerLink="/legal/tos" class="link-hover ml-0.5 font-semibold text-accent">
+            Terms of Service
+          </a>
+        </label>
+      </div>
+
+      <!-- Sign-up Button -->
+      <button
+        type="submit"
+        class="btn btn-primary relative w-full text-base"
+        [disabled]="signUpForm.invalid || signingUp"
+      >
+        Sign Up
+        <span
+          [ngClass]="signingUp ? 'visible' : 'hidden'"
+          class="loading loading-spinner loading-sm absolute right-4 top-1/2 -translate-y-1/2 translate-x-1/2"
+        ></span>
+      </button>
+
+      <!-- Sign-up Error -->
+      <div
+        *ngIf="signUpError"
+        class="animate-jump-in animate-duration-300 animate-once animate-ease-linear"
+      >
+        <p
+          class="whitespace-pre-wrap text-pretty px-10 text-center text-xs text-error"
+          [innerText]="signUpError"
+        ></p>
+      </div>
+    </form>
+
+    <div class="divider">or</div>
+
+    <!-- Sign-in Link -->
+    <span class="label-text text-center font-light">
+      Already have an account?
+      <a routerLink="/auth/signin" class="link-hover link link-primary ml-0.5 font-bold">Sign in</a>
+    </span>
+  </div>
+</div>

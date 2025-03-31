@@ -1,0 +1,36 @@
+{
+  "compilerOptions": {
+    "baseUrl": "./src",
+    "outDir": "./dist",
+    "module": "commonjs",
+    "declaration": true,
+    "removeComments": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "target": "ES2021",
+    "sourceMap": true,
+    "paths": {
+      "@config/*": ["config/*"],
+      "@common/*": ["common/*"],
+      "@pagination/*": ["common/helpers/pagination/*"],
+      "@markdown/*": ["common/helpers/markdown/*"],
+      "@datastore/*": ["shared/datastore/*"],
+      "@logger/*": ["shared/logger/*"],
+      "@mapper/*": ["shared/mapper/*"],
+      "@auth/*": ["auth/*"],
+      "@users/*": ["users/*"],
+      "@media/*": ["media/*"],
+      "@buzzes/*": ["buzzes/*"],
+      "@hashtags/*": ["hashtags/*"],
+      "@comments/*": ["comments/*"]
+    },
+    "incremental": true,
+    "skipLibCheck": true,
+    "strictNullChecks": true,
+    "noImplicitAny": false,
+    "strictBindCallApply": false,
+    "forceConsistentCasingInFileNames": false,
+    "noFallthroughCasesInSwitch": false
+  }
+}

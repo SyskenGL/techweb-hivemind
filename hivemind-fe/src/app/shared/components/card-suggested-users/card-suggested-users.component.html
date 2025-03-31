@@ -1,0 +1,26 @@
+<div class="card border border-base-content/10">
+  <div class="card-body gap-6">
+    <h1 class="text-2xl font-bold">Discover People</h1>
+    <!-- Suggested Users -->
+    <div *ngIf="suggestedUsers.length > 0" class="flex flex-col gap-5">
+      <hm-molecule-user-byline
+        *ngFor="let suggestedUser of suggestedUsers.slice(0, 5)"
+        [user]="suggestedUser"
+      ></hm-molecule-user-byline>
+    </div>
+
+    <!-- Loading Spinner -->
+    <ng-container *ngIf="fetchingSuggestedUsers">
+      <div class="flex justify-center py-6">
+        <span class="loading loading-ring loading-lg text-base-content-muted"></span>
+      </div>
+    </ng-container>
+
+    <!-- Retry Button -->
+    <hm-button-retry
+      *ngIf="suggestedUsersFetchFailed"
+      (retry)="fetchSuggestedUsers(true)"
+      class="py-6"
+    ></hm-button-retry>
+  </div>
+</div>

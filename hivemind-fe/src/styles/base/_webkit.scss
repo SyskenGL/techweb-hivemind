@@ -1,0 +1,29 @@
+@layer base {
+  /* Input Date */
+  input[type="date"] {
+    @apply appearance-none;
+    & ::-webkit-inner-spin-button,
+    &::-webkit-calendar-picker-indicator {
+      @apply hidden appearance-none;
+    }
+  }
+
+  /* Input Autofill */
+  input:-webkit-autofill {
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: oklch(var(--bc));
+    &::selection {
+      -webkit-background-clip: text !important;
+      -webkit-text-fill-color: oklch(var(--b1));
+    }
+  }
+
+  /* Disable Scrollbar */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}

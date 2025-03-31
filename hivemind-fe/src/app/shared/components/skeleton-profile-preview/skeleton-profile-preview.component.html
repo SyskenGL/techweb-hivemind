@@ -1,0 +1,47 @@
+<div class="card h-fit w-fit bg-base-100">
+  <div class="card w-80 overflow-hidden bg-base-100 md:w-[22rem]">
+    <!-- User Banner Skeleton -->
+    <div>
+      <div class="hm-skeleton aspect-[3/1] rounded-none bg-base-300"></div>
+      <div class="relative h-8">
+        <div
+          class="hm-skeleton absolute bottom-0 left-1/2 h-24 w-24 -translate-x-1/2 rounded-full border-4 border-base-100 bg-base-300"
+        ></div>
+      </div>
+    </div>
+
+    <!-- Mini-Profile Body -->
+    <div class="card-body gap-5 px-0 pb-7 pt-3">
+      <!-- User Info -->
+      <div class="flex flex-col items-center justify-center gap-4">
+        <div class="flex flex-col items-center gap-2 px-10">
+          <div class="hm-skeleton h-3 w-28 rounded-btn bg-base-300"></div>
+          <div class="hm-skeleton h-2 w-20 rounded-btn bg-base-300"></div>
+        </div>
+
+        <!-- Bio -->
+        <div class="flex w-full flex-col items-center gap-2 px-7">
+          <div class="hm-skeleton h-2 w-5/6 rounded-btn bg-base-300"></div>
+          <div class="hm-skeleton h-2 w-2/3 rounded-btn bg-base-300"></div>
+        </div>
+      </div>
+
+      <!-- Statistics Skeleton -->
+      <div class="flex w-full items-center justify-center">
+        <div class="flex w-5/6 justify-between divide-x divide-base-300 text-center">
+          <div *ngFor="let _ of [].constructor(3)" class="flex w-1/3 flex-col items-center">
+            <div class="flex flex-col items-center gap-2">
+              <div class="hm-skeleton h-6 w-14 rounded-btn bg-base-300"></div>
+              <div class="hm-skeleton h-2 w-14 rounded-btn bg-base-300"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Button Skeleton -->
+      <div class="flex items-center justify-center">
+        <div class="hm-skeleton btn-sm w-5/6 rounded-btn bg-base-300"></div>
+      </div>
+    </div>
+  </div>
+</div>

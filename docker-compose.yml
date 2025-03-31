@@ -1,0 +1,119 @@
+services:
+  backend:
+    build:
+      context: ./hivemind-be
+    container_name: hivemind-be
+    environment:
+      - DATASTORE_DATABASE_URL=postgresql://postgres:admin@postgres:5432/hivemind
+      - DATASTORE_REDIS_HOST=redis
+      - DATASTORE_REDIS_PORT=6379
+      - DATASTORE_MINIO_HOST=minio
+      - DATASTORE_MINIO_PORT=9000
+      - DATASTORE_MINIO_ACCESS_KEY=hivemind
+      - DATASTORE_MINIO_SECRET_KEY={44ju$^6}-A=_l8R[h1}}Y6rZ0D5l&DOvkI6aWF3HFr6`?euk=
+      - LOGGER_LOG_FILE_PATH=/var/logs
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./logs/hivemind-be:/var/logs
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      minio-mc:
+        condition: service_completed_successfully
+    networks:
+      - hivemind-network
+
+  frontend:
+    build:
+      context: ./hivemind-fe
+    container_name: hivemind-fe
+    depends_on:
+      - backend
+    ports:
+      - "4200:80"
+    networks:
+      - hivemind-network
+
+  postgres:
+    image: postgres:16.3
+    container_name: hivemind-db
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_DB=hivemind
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./deploy/hivemind-db/backup:/docker-entrypoint-initdb.d
+    ports:
+      - "5432:5432"
+    networks:
+      - hivemind-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:alpine
+    container_name: hivemind-cache
+    ports:
+      - "6379:6379"
+    networks:
+      - hivemind-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  minio:
+    image: minio/minio:latest
+    container_name: hivemind-obj
+    environment:
+      - MINIO_ACCESS_KEY=hivemind
+      - MINIO_SECRET_KEY={44ju$^6}-A=_l8R[h1}}Y6rZ0D5l&DOvkI6aWF3HFr6`?euk=
+    command: server /data --console-address ":9001"
+    volumes:
+      - minio-data:/data
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    networks:
+      - hivemind-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  minio-mc:
+    image: minio/mc
+    container_name: hivemind-obj-cli
+    depends_on:
+      minio:
+        condition: service_healthy
+    environment:
+      - MINIO_SERVICE_NAME=minio
+      - MINIO_PORT=9000
+      - MINIO_ACCESS_KEY=hivemind
+      - MINIO_SECRET_KEY={44ju$^6}-A=_l8R[h1}}Y6rZ0D5l&DOvkI6aWF3HFr6`?euk=
+    entrypoint: /scripts/entrypoint.sh
+    volumes:
+      - ./deploy/hivemind-obj/backup/buckets:/buckets
+      - ./deploy/hivemind-obj/scripts:/scripts
+    networks:
+      - hivemind-network
+
+networks:
+  hivemind-network:
+    driver: bridge
+
+volumes:
+  postgres-data:
+    driver: local
+  minio-data:
+    driver: local

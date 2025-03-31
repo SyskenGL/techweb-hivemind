@@ -1,0 +1,188 @@
+<div class="card">
+  <div class="card-body gap-5 pb-5">
+    <div class="flex justify-between">
+      <!-- Author -->
+      <hm-molecule-author-byline
+        [author]="buzz.author"
+        [createdAt]="buzz.createdAt"
+        [updatedAt]="buzz.updatedAt"
+      ></hm-molecule-author-byline>
+
+      <!-- Commands -->
+      <div
+        *ngIf="buzz.interaction.authored"
+        stopClickPropagation
+        class="dropdown dropdown-end drop-shadow-card"
+      >
+        <button
+          tabindex="0"
+          role="button"
+          class="btn btn-circle btn-ghost btn-sm mb-2 text-base-content-muted"
+        >
+          <i class="fa-solid fa-ellipsis-vertical"></i>
+        </button>
+        <ul tabindex="0" class="menu dropdown-content w-48 rounded-box bg-base-100">
+          <li>
+            <button
+              class="hover:bg-error/20 hover:text-error"
+              (click)="deleteBuzz()"
+              [ngClass]="{ 'animate-pulse': deleting }"
+              [disabled]="deleting"
+            >
+              <i class="fa-solid fa-trash-can w-4"></i>
+              Delete Buzz
+            </button>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Text Content -->
+    <div class="!container prose text-pretty break-words text-start">
+      <h2 class="mb-3 w-full min-w-0 text-xl sm:text-2xl">{{ buzz.title }}</h2>
+      <p
+        class="min-w-0 whitespace-pre-wrap text-start"
+        interceptRouterLinks
+        [ngClass]="clamp ? 'line-clamp-[8]' : ''"
+        [stopPropagation]="true"
+        [innerHTML]="
+          buzz.content
+            | routerize
+              : [
+                  { className: 'mention', route: '/user/', substring: 1 },
+                  { className: 'hashtag', route: '/explore?s=buzzes&q=', substring: 1 }
+                ]
+        "
+      ></p>
+    </div>
+
+    <!-- Media Carousel  -->
+    <hm-carousel-media
+      *ngIf="buzz.media.length > 0"
+      stopClickPropagation
+      [media]="buzz.media"
+    ></hm-carousel-media>
+
+    <!-- Interactions & Statistics -->
+    <div class="flex flex-wrap items-center justify-between font-digit text-base-content-muted">
+      <!-- Upvotes -->
+      <button
+        stopClickPropagation
+        class="group flex items-center"
+        (click)="toggleVote('up')"
+        [disabled]="buzz.interaction.authored || togglingVote"
+        [ngClass]="{
+          'text-upvote': buzz.interaction.vote === 'up',
+          'animate-pulse': togglingVote === 'up'
+        }"
+      >
+        <div
+          class="flex h-10 w-10 items-center justify-center rounded-full transition-all duration-300"
+          [ngClass]="{
+            'group-hover:bg-upvote/20 group-hover:text-upvote': !buzz.interaction.authored
+          }"
+        >
+          <i
+            class="fa-lightbulb"
+            [ngClass]="buzz.interaction.vote === 'up' ? 'fa-solid' : 'fa-regular'"
+          ></i>
+        </div>
+        <span
+          class="-ml-1 transition-all duration-300"
+          [ngClass]="{ 'group-hover:text-upvote': !buzz.interaction.authored }"
+        >
+          {{ buzz.metric.votes.up | shortNumber: 1 }}
+        </span>
+      </button>
+
+      <!-- Downvotes -->
+      <button
+        stopClickPropagation
+        class="group flex items-center"
+        (click)="toggleVote('down')"
+        [disabled]="buzz.interaction.authored || togglingVote"
+        [ngClass]="{
+          'text-downvote': buzz.interaction.vote === 'down',
+          'animate-pulse': togglingVote === 'down'
+        }"
+      >
+        <div
+          class="flex h-10 w-10 items-center justify-center rounded-full transition-all duration-300"
+          [ngClass]="{
+            'group-hover:bg-downvote/20 group-hover:text-downvote': !buzz.interaction.authored
+          }"
+        >
+          <i class="fa-solid fa-explosion"></i>
+        </div>
+        <span
+          class="-ml-1 transition-all duration-300 group-hover:text-downvote"
+          [ngClass]="{ 'group-hover:text-downvote': !buzz.interaction.authored }"
+        >
+          {{ buzz.metric.votes.down | shortNumber: 1 }}
+        </span>
+      </button>
+
+      <!-- Comments -->
+      <button
+        class="group flex items-center"
+        [ngClass]="{ 'text-accent': buzz.interaction.comments > 0 }"
+      >
+        <div
+          class="flex h-10 w-10 items-center justify-center rounded-full transition-all duration-300 group-hover:bg-accent/20 group-hover:text-accent"
+        >
+          <i
+            class="fa-comments"
+            [ngClass]="buzz.interaction.comments > 0 ? 'fa-solid' : 'fa-regular'"
+          ></i>
+        </div>
+        <span class="-ml-1 transition-all duration-300 group-hover:text-accent">
+          {{ buzz.metric.comments | shortNumber: 1 }}
+        </span>
+      </button>
+
+      <!-- Views -->
+      <button class="group flex items-center">
+        <div
+          class="flex h-10 w-10 items-center justify-center rounded-full transition-all duration-300 group-hover:bg-accent/20 group-hover:text-accent"
+        >
+          <i class="fa-solid fa-chart-column"></i>
+        </div>
+        <span class="-ml-1 transition-all duration-300 group-hover:text-accent">
+          {{ buzz.metric.views | shortNumber: 1 }}
+        </span>
+      </button>
+
+      <div class="flex">
+        <!-- Bookmark -->
+        <button
+          stopClickPropagation
+          class="group -mr-1 flex items-center"
+          [ngClass]="{
+            'text-accent': buzz.interaction.bookmarked,
+            'animate-pulse': togglingBookmark
+          }"
+          [disabled]="togglingBookmark"
+          (click)="toggleBookmark()"
+        >
+          <div
+            class="flex h-10 w-10 items-center justify-center rounded-full transition-all duration-300 group-hover:bg-accent/20 group-hover:text-accent"
+          >
+            <i
+              class="fa-bookmark"
+              [ngClass]="buzz.interaction.bookmarked ? 'fa-solid' : 'fa-regular'"
+            ></i>
+          </div>
+        </button>
+
+        <!-- Share -->
+        <button stopClickPropagation class="group flex items-center" (click)="share()">
+          <div
+            class="flex h-10 w-10 items-center justify-center rounded-full transition-all duration-300 group-hover:bg-accent/20 group-hover:text-accent"
+          >
+            <i class="fa-solid fa-arrow-up-from-bracket"></i>
+          </div>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

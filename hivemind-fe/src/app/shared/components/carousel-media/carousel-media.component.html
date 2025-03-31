@@ -1,0 +1,93 @@
+<!-- Carousel Wrapper -->
+<div class="relative">
+  <div class="aspect-1 h-auto max-w-full select-none overflow-hidden rounded-box sm:aspect-[4/3]">
+    <!-- Slides Container -->
+    <div
+      class="flex h-full w-full transition-transform duration-300 ease-in-out"
+      [style.transform]="'translateX(' + currentMediaIndex * -100 + '%)'"
+    >
+      <!-- Slides -->
+      <div
+        *ngFor="let media of _media; let i = index"
+        class="relative h-full w-full flex-shrink-0 overflow-hidden bg-base-300"
+        [ngClass]="{ 'cursor-zoom-in': zoomable && media.status === 'D' }"
+        (click)="zoomInMedia()"
+      >
+        <!-- Loading Spinner -->
+        <span
+          *ngIf="!media.id || media.status === 'L'"
+          class="loading loading-spinner loading-md absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-base-content-muted"
+        ></span>
+
+        <!--  Content -->
+        <ng-container *ngIf="media.id && media.status !== 'E'">
+          <!-- Blurred Background -->
+          <img
+            fill
+            class="absolute inset-0 object-cover blur-xl"
+            [ngSrc]="media.id"
+            (load)="onMediaLoad(i)"
+            (error)="onMediaError(i)"
+          />
+
+          <!-- Media -->
+          <img
+            *ngIf="media.status === 'D'"
+            fill
+            class="absolute inset-0 object-contain"
+            [ngSrc]="media.id"
+          />
+        </ng-container>
+
+        <!-- Error Fallback -->
+        <div
+          *ngIf="media.status === 'E'"
+          class="absolute inset-0 flex cursor-pointer items-center justify-center"
+          (click)="reloadMedia(i)"
+        >
+          <span class="text-sm text-base-content-muted">
+            Couldn't load the image. Click to retry.
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Zoom-In Modal -->
+  <dialog *ngIf="zoomable" #zoomInMediaModal class="modal duration-0 focus-within:outline-none">
+    <div class="modal-box relative h-full max-w-full cursor-zoom-out" (click)="zoomOutMedia()">
+      <ng-container *ngIf="_media[currentMediaIndex].id">
+        <img [ngSrc]="_media[currentMediaIndex].id!" fill class="absolute blur-xl" />
+        <img [ngSrc]="_media[currentMediaIndex].id!" fill class="object-contain" />
+      </ng-container>
+    </div>
+  </dialog>
+
+  <!-- Navigation Commands -->
+  <div *ngIf="!isFirstMedia()" class="absolute left-2 top-1/2 -translate-y-1/2">
+    <button
+      class="btn btn-circle btn-xs border-0 bg-base-100/50 sm:btn-sm hover:bg-base-100/75"
+      (click)="previousMedia()"
+    >
+      <i class="fa-solid fa-chevron-left fa-xs"></i>
+    </button>
+  </div>
+  <div *ngIf="!isLastMedia()" class="absolute right-2 top-1/2 -translate-y-1/2">
+    <button
+      class="btn btn-circle btn-xs border-0 bg-base-100/50 sm:btn-sm hover:bg-base-100/75"
+      (click)="nextMedia()"
+    >
+      <i class="fa-solid fa-chevron-right fa-xs"></i>
+    </button>
+  </div>
+
+  <!-- Digit Indicators  -->
+  <div
+    *ngIf="shouldDisplayIndicators()"
+    class="absolute right-2 top-2 rounded-full bg-base-100/50 px-2 py-1 font-digit text-xs"
+  >
+    <span>{{ currentMediaIndex + 1 }}</span>
+    <span>&nbsp;of&nbsp;</span>
+    <span>{{ _media.length }}</span>
+  </div>
+</div>

@@ -1,0 +1,51 @@
+@layer components {
+  /* Tooltip Helper */
+  .tooltip-helper {
+    --tooltip-tail: 0.3rem;
+    &::before {
+      @apply rounded-btn p-2 text-xs;
+    }
+  }
+
+  /* Placeholder */
+  .hm-skeleton {
+    @apply skeleton;
+    background-image: linear-gradient(
+      105deg,
+      transparent 0%,
+      transparent 25%,
+      oklch(var(--skeleton) / 1) 50%,
+      transparent 75%,
+      transparent 100%
+    );
+    animation: skeleton 3s ease-in-out infinite;
+  }
+
+  /* Alert Toast */
+  .toast-bottom-center {
+    @apply bottom-[5%];
+  }
+
+  .toast-container .ngx-toastr {
+    background-size: 16px;
+    @apply rounded-box py-2.5 shadow-none drop-shadow-card;
+    &.toast-success {
+      @apply bg-success text-success-content;
+    }
+    &.toast-error {
+      @apply bg-error text-error-content;
+    }
+    &.toast-warning {
+      @apply bg-warning text-warning-content;
+    }
+    &.toast-info {
+      @apply bg-info text-info-content;
+    }
+    .toast-message {
+      @apply text-sm;
+    }
+    .toast-title {
+      @apply text-base font-bold;
+    }
+  }
+}

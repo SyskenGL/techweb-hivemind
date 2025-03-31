@@ -1,0 +1,149 @@
+<div class="card">
+  <div class="card-body pb-5">
+    <div class="flex justify-between">
+      <!-- Author -->
+      <hm-molecule-author-byline
+        [author]="comment.author"
+        [createdAt]="comment.createdAt"
+        [updatedAt]="comment.updatedAt"
+      ></hm-molecule-author-byline>
+
+      <!-- Commands -->
+      <div
+        *ngIf="comment.interaction.authored && !editing"
+        class="dropdown dropdown-end drop-shadow-card"
+      >
+        <button
+          tabindex="0"
+          role="button"
+          class="btn btn-circle btn-ghost btn-sm mb-2 text-base-content-muted"
+        >
+          <i class="fa-solid fa-ellipsis-vertical"></i>
+        </button>
+        <ul tabindex="0" class="menu dropdown-content w-48 rounded-box bg-base-100">
+          <li>
+            <button (click)="editing = true">
+              <i class="fa-solid fa-pen-to-square w-4"></i>
+              Update Comment
+            </button>
+          </li>
+          <li>
+            <button
+              class="hover:bg-error/20 hover:text-error"
+              (click)="deleteComment()"
+              [ngClass]="{ 'animate-pulse': deleting }"
+              [disabled]="deleting"
+            >
+              <i class="fa-solid fa-trash-can w-4"></i>
+              Delete Comment
+            </button>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div *ngIf="!editing; else editTemplate">
+      <!-- Content -->
+      <div class="!container prose mt-1 text-pretty break-words text-start">
+        <p
+          #content
+          class="mb-0 min-w-0 whitespace-pre-wrap text-start"
+          interceptRouterLinks
+          [ngClass]="clamp && isLongContent && !isContentExpanded ? 'line-clamp-4' : ''"
+          [innerHTML]="
+            comment.content
+              | routerize
+                : [
+                    { className: 'mention', route: '/user/', substring: 1 },
+                    { className: 'hashtag', route: '/explore?s=buzzes&q=', substring: 1 }
+                  ]
+          "
+        ></p>
+
+        <!-- Show More Button -->
+        <button
+          *ngIf="isLongContent"
+          (click)="isContentExpanded = !isContentExpanded"
+          class="link-hover link text-sm text-base-content-muted"
+        >
+          {{ isContentExpanded ? 'Show Less' : 'Show More' }}
+        </button>
+      </div>
+    </div>
+
+    <!-- Interactions & Statistics -->
+    <div class="-ml-2 flex flex-wrap items-center gap-7 font-digit text-base-content-muted">
+      <!-- Likes -->
+      <button
+        class="group flex items-center"
+        (click)="toggleVote('up')"
+        [disabled]="comment.interaction.authored || togglingVote"
+        [ngClass]="{
+          'text-base-content': comment.interaction.vote === 'up',
+          'animate-pulse': togglingVote === 'up'
+        }"
+      >
+        <div
+          class="flex h-10 w-10 items-center justify-center rounded-full transition-all duration-300"
+          [ngClass]="{
+            'group-hover:bg-base-content/20 group-hover:text-base-content':
+              !comment.interaction.authored
+          }"
+        >
+          <i
+            class="fa-thumbs-up"
+            [ngClass]="comment.interaction.vote === 'up' ? 'fa-solid' : 'fa-regular'"
+          ></i>
+        </div>
+        <span
+          class="-ml-1 transition-all duration-300"
+          [ngClass]="{ 'group-hover:text-base-content': !comment.interaction.authored }"
+        >
+          {{ comment.metric.votes.up | shortNumber: 1 }}
+        </span>
+      </button>
+
+      <!-- Dislikes -->
+      <button
+        class="group flex items-center"
+        (click)="toggleVote('down')"
+        [disabled]="comment.interaction.authored || togglingVote"
+        [ngClass]="{
+          'text-base-content': comment.interaction.vote === 'down',
+          'animate-pulse': togglingVote === 'down'
+        }"
+      >
+        <div
+          class="flex h-10 w-10 items-center justify-center rounded-full transition-all duration-300"
+          [ngClass]="{
+            'group-hover:bg-base-content/20 group-hover:text-base-content':
+              !comment.interaction.authored
+          }"
+        >
+          <i
+            class="fa-thumbs-down"
+            [ngClass]="comment.interaction.vote === 'down' ? 'fa-solid' : 'fa-regular'"
+          ></i>
+        </div>
+        <span
+          class="-ml-1 transition-all duration-300 group-hover:text-base-content"
+          [ngClass]="{ 'group-hover:text-base-content': !comment.interaction.authored }"
+        >
+          {{ comment.metric.votes.down | shortNumber: 1 }}
+        </span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Edit Template -->
+<ng-template #editTemplate>
+  <hm-form-comment
+    [updateMode]="true"
+    [buzz]="buzz"
+    [commentId]="comment.id"
+    [content]="comment.content"
+    (commentUpdated)="onCommentUpdated($event)"
+    (updateCancelled)="editing = false"
+  ></hm-form-comment>
+</ng-template>

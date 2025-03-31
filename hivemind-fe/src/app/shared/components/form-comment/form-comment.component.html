@@ -1,0 +1,101 @@
+<div class="flex flex-col gap-4">
+  <!-- Comment Input -->
+  <div class="!container prose relative flex-1 text-pretty">
+    <textarea
+      #textarea
+      [formControl]="contentControl"
+      (keydown.enter)="onSubmit($event)"
+      (input)="updateTextAreaHeight()"
+      (focus)="isTextAreaFocused = true"
+      (blur)="isTextAreaFocused = false"
+      class="w-full resize-none bg-base-100 outline-none placeholder:text-base-content-muted"
+      [placeholder]="updateMode ? '' : 'Post a comment...'"
+      rows="1"
+      maxlength="200"
+    ></textarea>
+
+    <!-- Focus Underline -->
+    <div class="relative h-[1px] w-full bg-base-content/10">
+      <span
+        class="absolute bottom-0 left-0 h-[1px] w-full rounded-badge bg-secondary transition-transform duration-300 ease-in-out"
+        [ngClass]="{ 'scale-x-100': isTextAreaFocused, 'scale-x-0': !isTextAreaFocused }"
+      ></span>
+    </div>
+  </div>
+
+  <div class="flex flex-1 items-center justify-between">
+    <!-- Left Container -->
+    <div class="flex items-center gap-3">
+      <!-- Emoji Picker -->
+      <div class="relative">
+        <button
+          (click)="showEmojiPicker = !showEmojiPicker"
+          class="btn btn-circle btn-ghost btn-sm hover:bg-accent/20"
+        >
+          <i class="fa-face-smile fa-regular fa-lg text-accent"></i>
+        </button>
+
+        <div class="relative z-30 drop-shadow-card">
+          <emoji-mart
+            #emojiPicker
+            *ngIf="showEmojiPicker"
+            class="absolute -left-16 top-3 transform pb-16 md:left-1/2 md:-translate-x-1/2"
+            (emojiSelect)="onEmojiSelect($event)"
+            [color]="'oklch(var(--p))'"
+            [notFoundEmoji]="'eyes'"
+            [emoji]="'+1'"
+            [i18n]="{ notfound: '' }"
+            [isNative]="true"
+            [darkMode]="false"
+          ></emoji-mart>
+        </div>
+      </div>
+
+      <!-- Comment Length Progress -->
+      <div *ngIf="contentControl.valid" class="flex flex-col gap-1 pb-1 text-xs">
+        <span>{{ contentControl.value.length }} / 200</span>
+        <progress
+          class="progress progress-accent h-1 w-full"
+          [value]="contentControl.value.length"
+          max="200"
+        ></progress>
+      </div>
+    </div>
+
+    <!-- Right Container -->
+    <div class="flex gap-3">
+      <!-- Cancel Button -->
+      <button
+        *ngIf="updateMode || contentControl.valid"
+        class="btn btn-ghost btn-md relative flex w-fit items-center justify-center font-semibold"
+        (click)="onCancel()"
+        [disabled]="submitting"
+      >
+        <span class="flex items-center text-base" [ngClass]="{ invisible: submitting }">
+          Cancel
+        </span>
+        <span
+          *ngIf="submitting"
+          class="loading loading-spinner loading-xs absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
+        ></span>
+      </button>
+
+      <!-- Submit Button -->
+      <button
+        class="btn btn-secondary btn-md relative flex w-fit items-center justify-center font-semibold"
+        (click)="onSubmit()"
+        [disabled]="submitting || contentControl.invalid"
+      >
+        <span
+          class="flex items-center text-base"
+          [ngClass]="{ invisible: submitting }"
+          [innerText]="updateMode ? 'Save' : 'Post'"
+        ></span>
+        <span
+          *ngIf="submitting"
+          class="loading loading-spinner loading-xs absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
+        ></span>
+      </button>
+    </div>
+  </div>
+</div>

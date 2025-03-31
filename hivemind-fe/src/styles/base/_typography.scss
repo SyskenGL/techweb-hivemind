@@ -1,0 +1,24 @@
+@layer base {
+  /* Text Styling */
+  :root {
+    @apply font-body text-sm;
+  }
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-heading;
+  }
+
+  /* Prose */
+  .prose {
+    a {
+      @apply text-accent no-underline;
+      &:hover {
+        @apply underline;
+      }
+    }
+  }
+}

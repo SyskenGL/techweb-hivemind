@@ -1,0 +1,22 @@
+<button
+  class="btn btn-sm relative flex items-center justify-center"
+  [ngClass]="{
+    'w-full': fullWidth,
+    'btn-outline hover:btn-error hover:!bg-error/20 hover:!text-error': user.relation!.followed,
+    'btn-secondary': !user.relation!.followed
+  }"
+  [disabled]="togglingFollow"
+  (click)="toggleFollow()"
+>
+  <span class="flex items-center" [ngClass]="{ invisible: togglingFollow }">
+    <i
+      class="fa-solid mr-2"
+      [ngClass]="user.relation!.followed ? 'fa-user-minus' : 'fa-user-plus'"
+    ></i>
+    <span>{{ user.relation!.followed ? 'Unfollow' : 'Follow' }}</span>
+  </span>
+  <span
+    *ngIf="togglingFollow"
+    class="loading loading-spinner loading-xs absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
+  ></span>
+</button>

@@ -1,0 +1,19 @@
+@layer base {
+  /* General Settings */
+  :root {
+    @apply overscroll-y-none;
+  }
+
+  /* Text Selection Styling */
+  ::selection {
+    @apply bg-base-content text-base-100;
+  }
+
+  /* Negative Styling */
+  .negative {
+    @apply bg-base-content text-base-100;
+    & ::selection {
+      @apply bg-base-100 text-base-content;
+    }
+  }
+}

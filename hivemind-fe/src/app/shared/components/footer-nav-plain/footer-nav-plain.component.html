@@ -1,0 +1,36 @@
+<footer
+  class="footer footer-center text-base-content-muted"
+  [ngClass]="complete ? 'text-xs' : 'text-sm'"
+>
+  <div
+    class="flex flex-row flex-wrap justify-center gap-y-2"
+    [ngClass]="complete ? 'gap-5' : 'gap-3'"
+  >
+    <nav
+      class="flex flex-row flex-wrap justify-center gap-y-2"
+      [ngClass]="complete ? 'gap-5' : 'gap-3'"
+    >
+      <a *ngIf="complete" href="javascript:void(0);" class="link-hover link">Branding Solutions</a>
+      <a *ngIf="complete" href="javascript:void(0);" class="link-hover link">Marketing Strategy</a>
+      <a *ngIf="complete" href="javascript:void(0);" class="link-hover link">Ad Campaigns</a>
+      <a *ngIf="complete" href="javascript:void(0);" class="link-hover link">
+        Career Opportunities
+      </a>
+      <a *ngIf="complete" href="javascript:void(0);" class="link-hover link">Investor Relations</a>
+      <a href="javascript:void(0);" class="link-hover link">Terms of Service</a>
+      <a href="javascript:void(0);" class="link-hover link">Privacy & Data Protection</a>
+      <a href="javascript:void(0);" class="link-hover link">Cookie Usage Policy</a>
+      <a href="javascript:void(0);" class="link-hover link">Compliance Information</a>
+      <a href="javascript:void(0);" class="link-hover link">Help Center</a>
+      <a *ngIf="complete" href="javascript:void(0);" class="link-hover link">Affiliate Program</a>
+      <a *ngIf="complete" href="javascript:void(0);" class="link-hover link">
+        Integration Partners
+      </a>
+      <a *ngIf="complete" href="javascript:void(0);" class="link-hover link">API Access</a>
+      <a *ngIf="complete" href="javascript:void(0);" class="link-hover link">Solution Partners</a>
+    </nav>
+    <aside>
+      <p>© {{ currentYear }} - Hivemind Corp.</p>
+    </aside>
+  </div>
+</footer>

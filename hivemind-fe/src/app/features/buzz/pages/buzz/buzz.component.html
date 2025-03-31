@@ -1,0 +1,28 @@
+<!-- Buzz Header -->
+<hm-header-sticky-template [backPageButton]="true">
+  <ng-template #contentNextToBackPageButton>
+    <h1 class="text-2xl font-bold">Buzz</h1>
+  </ng-template>
+</hm-header-sticky-template>
+
+<!-- Buzz -->
+<div class="border-b border-base-content/10">
+  <hm-card-buzz
+    *ngIf="buzz$ | async as buzz"
+    [buzz]="buzz"
+    (buzzDeleted)="location.back()"
+  ></hm-card-buzz>
+  <hm-skeleton-card-buzz *ngIf="!(buzz$ | async) && !buzzFetchFailed"></hm-skeleton-card-buzz>
+</div>
+
+<!-- Retry Fetch Buzz Button -->
+<div *ngIf="buzzFetchFailed" class="py-12">
+  <hm-button-retry (retry)="fetchBuzz(true)"></hm-button-retry>
+</div>
+
+<ng-container *ngIf="buzz$ | async as buzz">
+  <hm-section-buzz-comments
+    [buzz]="buzz"
+    [infiniteScrollDisabled]="infiniteScrollCommentsDisabled"
+  ></hm-section-buzz-comments>
+</ng-container>

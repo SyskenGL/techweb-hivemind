@@ -1,0 +1,24 @@
+<div class="flex h-16 w-full">
+  <!-- Tab -->
+  <button
+    *ngFor="let feed of tabs; let i = index"
+    class="relative flex h-full flex-1 justify-center text-lg transition-all duration-300 ease-in-out hover:bg-base-200"
+    [ngClass]="{
+      'font-heading font-bold text-base-content': activeTabIndex === i,
+      'font-medium text-base-content-muted': activeTabIndex !== i
+    }"
+    (click)="selectTab(i)"
+  >
+    <!-- Label -->
+    <div class="relative flex items-center justify-center max-sm:w-1/2">
+      <span *ngIf="feed.icon" class="sm:hidden"><i class="{{ feed.icon }}"></i></span>
+      <span [ngClass]="{ 'max-sm:hidden': feed.icon }">{{ feed.label }}</span>
+
+      <!-- Focus Underline -->
+      <span
+        class="absolute bottom-0 left-0 h-1 w-full rounded-badge bg-primary transition-transform duration-300 ease-in-out"
+        [ngClass]="{ 'scale-x-100': activeTabIndex === i, 'scale-x-0': activeTabIndex !== i }"
+      ></span>
+    </div>
+  </button>
+</div>

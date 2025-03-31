@@ -1,0 +1,41 @@
+<div class="card border border-base-content/10">
+  <div class="card-body gap-6">
+    <h1 class="text-2xl font-bold">Latest Trends</h1>
+    <!-- Suggested Trends -->
+    <div *ngIf="trends.length > 0" class="flex flex-col gap-2">
+      <a
+        *ngFor="let trend of trends.slice(0, 5)"
+        class="btn-ghost -mx-8 flex cursor-pointer items-center justify-between rounded-none px-8 py-2"
+        (click)="onClick(trend)"
+      >
+        <div class="flex flex-col gap-0.5">
+          <span class="text-sm text-base-content-muted">
+            {{ trend.firstUsageDate | date }}
+          </span>
+          <span class="text-lg font-bold">{{ trend.name }}</span>
+          <span class="text-sm text-base-content-muted">
+            Total Buzzes: {{ trend.totalUsageCount }}
+          </span>
+        </div>
+        <span class="text-base-content-muted">
+          {{ trend.usageCount }}
+          <i class="fa-solid fa-chart-simple ml-2"></i>
+        </span>
+      </a>
+    </div>
+
+    <!-- Loading Spinner -->
+    <ng-container *ngIf="fetchingTrends">
+      <div class="flex justify-center py-6">
+        <span class="loading loading-ring loading-lg text-base-content-muted"></span>
+      </div>
+    </ng-container>
+
+    <!-- Retry Button -->
+    <hm-button-retry
+      *ngIf="trendsFetchFailed"
+      (retry)="fetchTrends(true)"
+      class="py-6"
+    ></hm-button-retry>
+  </div>
+</div>

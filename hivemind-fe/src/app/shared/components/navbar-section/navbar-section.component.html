@@ -1,0 +1,19 @@
+<nav>
+  <ol class="space-y-5">
+    <li
+      *ngFor="let section of sections; let sectionIndex = index"
+      class="transform transition-all duration-300 ease-in-out"
+      [ngClass]="{ 'scale-105': sectionIndex === currentSectionIndex }"
+    >
+      <a
+        role="button"
+        tabindex="0"
+        class="!text-base-content"
+        (click)="onSectionClick(sectionIndex)"
+        [ngClass]="{ '!font-semibold !underline': sectionIndex === currentSectionIndex }"
+      >
+        {{ section }}
+      </a>
+    </li>
+  </ol>
+</nav>

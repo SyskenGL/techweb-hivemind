@@ -1,0 +1,108 @@
+<div class="card max-w-sm select-none">
+  <div class="card-body p-0">
+    <!-- Sign-in Form Header -->
+    <div class="card-title mb-5 flex-col items-start">
+      <h1 class="text-4xl font-extrabold">Sign In</h1>
+      <p class="text-base font-light">
+        Sign in to your account and explore a world of possibilities. Your journey begins here.
+      </p>
+    </div>
+
+    <!-- Sign-in Form Body -->
+    <form [formGroup]="signInForm" (ngSubmit)="onSignIn()" class="space-y-5">
+      <!-- Username/E-mail Input -->
+      <div class="form-control">
+        <div
+          class="flabel-container border-base-content/10"
+          [ngClass]="{ 'border-error focus-within:border-error': usernameOrEmailError }"
+        >
+          <input
+            id="usernameOrEmail"
+            type="text"
+            class="flabel-input peer"
+            placeholder="Username or E-mail"
+            formControlName="usernameOrEmail"
+          />
+          <label
+            for="usernameOrEmail"
+            class="flabel"
+            [ngClass]="{ 'text-error': usernameOrEmailError }"
+          >
+            Username or E-mail
+          </label>
+          <i *ngIf="usernameOrEmailError" class="fa-solid fa-circle-xmark pl-3 text-error"></i>
+        </div>
+        <p
+          *ngIf="usernameOrEmailError"
+          class="label label-text-alt pb-0 text-error"
+          [innerText]="usernameOrEmailError"
+        ></p>
+      </div>
+
+      <!-- Password Input -->
+      <div class="form-control">
+        <div class="flabel-container gap-2 border-base-content/10 pr-2">
+          <input
+            id="password"
+            [type]="showPassword ? 'text' : 'password'"
+            class="flabel-input peer"
+            placeholder="Password"
+            formControlName="password"
+            autocomplete="off"
+          />
+          <label for="password" class="flabel">Password</label>
+          <button
+            type="button"
+            class="btn-circle btn-ghost btn-sm text-base-content"
+            (click)="showPassword = !showPassword"
+          >
+            <i [ngClass]="showPassword ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye'"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Remember Me Checkbox -->
+      <div class="flex items-center">
+        <input
+          id="rememberMe"
+          type="checkbox"
+          class="checkbox checkbox-xs"
+          formControlName="rememberMe"
+        />
+        <label for="rememberMe" class="label-text ml-3 cursor-pointer">Remember Me</label>
+      </div>
+
+      <!-- Sign-in Button -->
+      <button
+        type="submit"
+        class="btn btn-primary relative w-full text-base"
+        [disabled]="signInForm.invalid || signingIn"
+      >
+        Sign In
+        <span
+          [ngClass]="signingIn ? 'visible' : 'hidden'"
+          class="loading loading-spinner loading-sm absolute right-4 top-1/2 -translate-y-1/2 translate-x-1/2"
+        ></span>
+      </button>
+
+      <!-- Sign-in Error -->
+      <div
+        *ngIf="signInError"
+        class="animate-jump-in animate-duration-300 animate-once animate-ease-linear"
+      >
+        <p
+          class="whitespace-pre-wrap text-pretty px-10 text-center text-xs text-error"
+          [innerText]="signInError"
+        ></p>
+      </div>
+    </form>
+
+    <div class="divider">or</div>
+
+    <!-- Sign-up Link -->
+    <span class="label-text text-center font-light">
+      Don't have an account?
+      <a routerLink="/auth/signup" class="link-hover link link-primary ml-0.5 font-bold">Sign up</a>
+    </span>
+  </div>
+</div>

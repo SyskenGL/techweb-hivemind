@@ -1,0 +1,48 @@
+<div #scrollContainer>
+  <div
+    class="relative w-full"
+    infiniteScroll
+    [infiniteScrollThrottle]="150"
+    [infiniteScrollDisabled]="infiniteScrollDisabled"
+    [infiniteScrollThrottle]="infiniteScrollThrottle"
+    [style.height.px]="virtualizer.getTotalSize()"
+    (scrolled)="loadMore.emit()"
+  >
+    <div
+      class="absolute left-0 top-0 w-full"
+      [style.transform]="
+        'translateY(' +
+        (virtualizer.getVirtualItems()[0]
+          ? virtualizer.getVirtualItems()[0].start - parentOffset()
+          : 0) +
+        'px)'
+      "
+    >
+      <div
+        #virtualItem
+        *ngFor="let item of virtualizer.getVirtualItems(); trackBy: trackByVirtualItem"
+        [attr.data-index]="item.index"
+      >
+        <!-- Item Template -->
+        <ng-container *ngIf="item.index < items.length">
+          <ng-container
+            *ngTemplateOutlet="
+              itemTemplate;
+              context: { $implicit: items[item.index], index: item.index }
+            "
+          ></ng-container>
+        </ng-container>
+
+        <!-- Loading Template -->
+        <ng-container *ngIf="item.index > items.length - 1 && showLoading">
+          <ng-container *ngTemplateOutlet="loadingTemplate"></ng-container>
+        </ng-container>
+
+        <!-- Error Template -->
+        <ng-container *ngIf="item.index > items.length - 1 && showError">
+          <ng-container *ngTemplateOutlet="errorTemplate"></ng-container>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+</div>

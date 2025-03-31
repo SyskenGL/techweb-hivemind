@@ -1,0 +1,133 @@
+<!-- Cover Image -->
+<hm-figure-cover
+  [coverId]="user ? user.profile.coverId : user"
+  [priority]="true"
+  [zoomable]="true"
+></hm-figure-cover>
+
+<div class="relative flex flex-wrap items-end justify-between gap-y-5 px-8">
+  <!-- Profile Picture (Avatar) -->
+  <hm-figure-propic
+    [propicId]="user ? user.profile.propicId : user"
+    [border]="true"
+    [priority]="true"
+    [zoomable]="true"
+    class="absolute left-8 top-0 h-36 -translate-y-2/3 sm:h-48"
+  ></hm-figure-propic>
+
+  <!-- Placeholder to Maintain Layout Consistency -->
+  <div class="h-12 w-36 sm:h-16 sm:w-48"></div>
+
+  <!-- Social Media Links & Follow/Edit Button -->
+  <div #badgeContainer *ngIf="user" class="flex flex-wrap items-center gap-3">
+    <!-- Social Media Icons -->
+    <ng-container
+      *ngFor="
+        let social of [
+          { url: user.profile.facebookUrl, icon: 'fa-brands fa-facebook-f', label: 'Facebook' },
+          { url: user.profile.instagramUrl, icon: 'fa-brands fa-instagram', label: 'Instagram' },
+          { url: user.profile.twitterUrl, icon: 'fa-brands fa-x-twitter', label: 'X / Twitter' },
+          { url: user.profile.linkedInUrl, icon: 'fa-brands fa-linkedin-in', label: 'LinkedIn' },
+          { url: user.profile.websiteUrl, icon: 'fa-globe fa-solid', label: 'Personal Website' }
+        ]
+      "
+    >
+      <span
+        *ngIf="social.url"
+        class="tooltip-helper tooltip tooltip-bottom"
+        [attr.data-tip]="social.label"
+      >
+        <a
+          [href]="social.url"
+          target="_blank"
+          class="btn btn-circle btn-outline btn-sm hover:text-lg"
+        >
+          <i [ngClass]="social.icon"></i>
+        </a>
+      </span>
+    </ng-container>
+
+    <!-- Follow / Unfollow Button -->
+    <hm-button-follow *ngIf="user.relation" [user]="user"></hm-button-follow>
+
+    <button
+      *ngIf="!user.relation"
+      class="btn btn-outline btn-sm"
+      (click)="editProfileClicked.emit()"
+    >
+      <i class="fa-solid fa-pen-to-square"></i>
+      Edit Profile
+    </button>
+  </div>
+</div>
+
+<!-- User Information Section -->
+<div *ngIf="user" class="flex w-full flex-col gap-5 border-b border-base-content/10 p-8 pt-7">
+  <!-- Full Name & Username -->
+  <div class="flex flex-col">
+    <h1 class="w-full text-pretty break-words text-xl font-bold">
+      {{ user.profile.fullName }}
+      <i *ngIf="user.verified" class="fa-solid fa-circle-check fa-xs ml-1 text-accent"></i>
+    </h1>
+    <span class="text-base-content-muted">&#64;{{ user.username }}</span>
+  </div>
+
+  <!-- Account Creation Date -->
+  <span class="text-base-content-muted">
+    <i class="fa-regular fa-calendar mr-1"></i>
+    Buzzing since {{ user.createdAt | date: 'longDate' }}
+  </span>
+
+  <!-- User Bio -->
+  <p
+    *ngIf="user.profile.bio"
+    class="prose max-h-44 w-full min-w-0 max-w-full overflow-y-auto whitespace-pre-wrap text-pretty break-words text-start"
+    [innerText]="user.profile.bio"
+  ></p>
+
+  <!-- User Statistics (Buzz Count, Followers, Followings) -->
+  <div class="flex flex-wrap gap-5">
+    <div>
+      <span class="font-digit font-bold">{{ user.metric.buzzes | shortNumber }}</span>
+      <span class="text-base-content-muted">&nbsp;&nbsp;Buzzes</span>
+    </div>
+    <div
+      [ngClass]="{
+        'link-hover link': user.metric.followers > 0,
+        'pointer-events-none': user.metric.followers === 0
+      }"
+      (click)="followersClicked.emit()"
+    >
+      <span class="font-digit font-bold">{{ user.metric.followers | shortNumber }}</span>
+      <span class="text-base-content-muted">&nbsp;&nbsp;Followers</span>
+    </div>
+    <div
+      [ngClass]="{
+        'link-hover link': user.metric.followings > 0,
+        'pointer-events-none': user.metric.followings === 0
+      }"
+      (click)="followingsClicked.emit()"
+    >
+      <span class="font-digit font-bold">{{ user.metric.followings | shortNumber }}</span>
+      <span class="text-base-content-muted">&nbsp;&nbsp;Followings</span>
+    </div>
+  </div>
+</div>
+
+<!-- User Not Found -->
+<div
+  *ngIf="user === null"
+  class="mx-auto mt-[10%] flex w-fit flex-col gap-1 text-pretty text-start"
+>
+  <h1 #userNotFoundTitle class="w-fit max-w-96 text-3xl font-bold">
+    The account you're
+    <br />
+    looking for doesn't exist!
+  </h1>
+  <span
+    class="text-lg text-base-content-muted"
+    [ngStyle]="{ width: userNotFoundTitle?.offsetWidth + 'px' }"
+  >
+    Try searching for another one.
+  </span>
+</div>

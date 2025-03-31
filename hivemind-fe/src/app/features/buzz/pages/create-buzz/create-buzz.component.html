@@ -1,0 +1,302 @@
+<!--  Header -->
+<hm-header-sticky-template [backPageButton]="true">
+  <ng-template #contentNextToBackPageButton>
+    <h1 class="text-2xl font-bold">Create Buzz</h1>
+  </ng-template>
+</hm-header-sticky-template>
+
+<!-- Form -->
+<form [formGroup]="createBuzzForm" class="flex flex-col gap-10 p-12">
+  <!-- Title -->
+  <div class="form-control">
+    <div class="flabel-container gap-2 border-base-content/10 pr-2">
+      <input
+        id="title"
+        class="flabel-input peer text-lg font-bold"
+        placeholder="Title"
+        formControlName="title"
+        autocomplete="off"
+        maxlength="70"
+      />
+      <label for="title" class="flabel">Title</label>
+      <span class="mx-2 bg-base-100 text-start text-xs text-base-content-muted">
+        {{ title.value.length }} / 70
+      </span>
+    </div>
+  </div>
+
+  <!-- Content -->
+  <div class="form-control">
+    <!-- Content -->
+    <div class="multi-flabel-container rounded-b-none border-base-content/10">
+      <textarea
+        #contentTextarea
+        id="content"
+        class="multi-flabel-input peer !container prose h-32 max-h-96 w-full text-base"
+        formControlName="content"
+        placeholder="Content"
+        maxlength="400"
+      ></textarea>
+      <label for="content" class="multi-flabel">Content</label>
+    </div>
+
+    <!-- Preview -->
+    <div
+      class="-mt-2 w-full rounded-btn rounded-t-none rounded-bl-none border border-base-content/10 max-sm:rounded-br-none"
+    >
+      <div
+        class="!container prose max-h-96 min-h-36 min-w-0 overflow-y-auto whitespace-pre-wrap break-all p-4"
+        [innerHTML]="
+          html
+            | routerize
+              : [
+                  { className: 'mention', route: '/user/', substring: 1 },
+                  { className: 'hashtag', route: '/explore?s=buzzes&q=', substring: 1 }
+                ]
+        "
+      ></div>
+    </div>
+
+    <div
+      class="flex items-center divide-x divide-base-content/10 rounded-btn rounded-t-none border border-base-content/10 py-2 sm:w-fit sm:border-t-0 sm:py-2.5"
+    >
+      <!-- Markdown Commands -->
+      <div class="flex w-fit px-3 text-accent max-sm:justify-between sm:gap-3 sm:px-5">
+        <!-- Emoji Picker -->
+        <div class="relative">
+          <button
+            (click)="showEmojiPicker = !showEmojiPicker"
+            class="btn btn-circle btn-ghost btn-sm hover:bg-accent/20"
+          >
+            <i class="fa-face-smile fa-regular fa-lg"></i>
+          </button>
+
+          <div class="relative z-30 drop-shadow-card">
+            <emoji-mart
+              #emojiPicker
+              *ngIf="showEmojiPicker"
+              class="absolute -left-16 top-3 transform pb-16 md:left-1/2 md:-translate-x-1/2"
+              (emojiSelect)="onEmojiSelect($event)"
+              [color]="'oklch(var(--p))'"
+              [notFoundEmoji]="'eyes'"
+              [emoji]="'+1'"
+              [i18n]="{ notfound: '' }"
+              [isNative]="true"
+              [darkMode]="false"
+            ></emoji-mart>
+          </div>
+        </div>
+
+        <!-- Bold -->
+        <button
+          class="btn btn-circle btn-ghost btn-sm hover:bg-accent/20"
+          (click)="addMarkdown('**', '**')"
+        >
+          <i class="fa-solid fa-bold fa-lg"></i>
+        </button>
+
+        <!-- Italic -->
+        <button
+          class="btn btn-circle btn-ghost btn-sm hover:bg-accent/20"
+          (click)="addMarkdown('*', '*')"
+        >
+          <i class="fa-solid fa-italic fa-lg"></i>
+        </button>
+
+        <!-- Underline -->
+        <button
+          class="btn btn-circle btn-ghost btn-sm hover:bg-accent/20"
+          (click)="addMarkdown('++', '++')"
+        >
+          <i class="fa-solid fa-underline fa-lg"></i>
+        </button>
+
+        <!-- Strikethrough -->
+        <button
+          class="btn btn-circle btn-ghost btn-sm hover:bg-accent/20"
+          (click)="addMarkdown('~~', '~~')"
+        >
+          <i class="fa-solid fa-strikethrough fa-lg"></i>
+        </button>
+
+        <!-- Highlight -->
+        <button
+          class="btn btn-circle btn-ghost btn-sm hover:bg-accent/20"
+          (click)="addMarkdown('==', '==')"
+        >
+          <i class="fa-solid fa-highlighter fa-lg"></i>
+        </button>
+
+        <!-- Link -->
+        <button
+          class="btn btn-circle btn-ghost btn-sm hover:bg-accent/20"
+          (click)="addMarkdown('[', '](url)')"
+        >
+          <i class="fa-solid fa-link fa-lg"></i>
+        </button>
+      </div>
+
+      <!-- Content Length Progress -->
+      <div *ngIf="contentPlainLength > 0" class="flex flex-col gap-1 pl-4 pr-5 text-xs">
+        <span>{{ contentPlainLength }} / 400</span>
+        <progress
+          class="progress progress-accent h-1 w-full"
+          [value]="contentPlainLength"
+          max="400"
+        ></progress>
+      </div>
+    </div>
+  </div>
+
+  <!-- Upload File -->
+  <div *ngIf="mediaIds.value.length === 0" class="flex w-full items-center justify-center">
+    <label
+      for="dropzone-file"
+      class="btn-ghost flex h-32 w-full cursor-pointer flex-col items-center justify-center rounded-btn border border-dashed border-base-content/10"
+      (dragover)="onFileDrag($event)"
+      (drop)="onFileDrop($event)"
+    >
+      <div class="flex flex-col items-center justify-center pb-6 pt-5">
+        <i class="fa-solid fa-cloud-arrow-up mb-3 text-base-content-muted"></i>
+        <p class="mb-2 text-sm text-base-content-muted">
+          <span class="font-semibold">Click to upload</span>
+          or drag and drop
+        </p>
+        <p class="text-xs text-base-content-muted">GIF, PNG, JPEG, WEBP (Max 15MB)</p>
+      </div>
+      <input
+        id="dropzone-file"
+        type="file"
+        class="hidden"
+        (change)="onFileSelect($event)"
+        accept="image/png, image/jpeg, image/webp, image/gif"
+        multiple
+      />
+    </label>
+  </div>
+
+  <!-- Media Preview -->
+  <div *ngIf="mediaIds.value.length > 0" class="relative">
+    <hm-carousel-media [media]="mediaIds.value" [zoomable]="false"></hm-carousel-media>
+    <div class="absolute left-2 top-2 flex gap-2">
+      <!-- Add Button -->
+      <label
+        class="btn btn-xs cursor-pointer border-0 bg-base-100/50 sm:btn-sm hover:bg-base-100/75"
+      >
+        <i class="fa-solid fa-images fa-sm"></i>
+        Add
+        <input
+          type="file"
+          class="hidden"
+          (change)="onFileSelect($event)"
+          accept="image/png, image/jpeg, image/webp, image/gif"
+          multiple
+        />
+      </label>
+
+      <!-- Edit Button -->
+      <button
+        *ngIf="mediaIds.value.length > 1"
+        class="btn btn-xs border-0 bg-base-100/50 sm:btn-sm hover:bg-base-100/75"
+        (click)="openEditModal()"
+      >
+        <i class="fa-solid fa-pen-to-square fa-sm"></i>
+        Edit
+      </button>
+    </div>
+
+    <!-- Remove Button -->
+    <div class="absolute bottom-2 right-2">
+      <button
+        class="btn btn-circle btn-xs border-none bg-base-100/50 sm:btn-sm hover:bg-error/20 hover:text-error"
+        (click)="removeMedia()"
+      >
+        <i class="fa-solid fa-trash-can fa-sm"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- Submit Buzz Button -->
+  <div class="-mt-6 flex w-full justify-end">
+    <button
+      class="btn btn-secondary btn-md relative flex w-fit items-center justify-center font-semibold"
+      [disabled]="submitting || createBuzzForm.invalid"
+      (click)="onPost()"
+    >
+      <span class="flex items-center text-base" [ngClass]="{ invisible: submitting }">Post</span>
+      <span
+        *ngIf="submitting"
+        class="loading loading-spinner loading-xs absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
+      ></span>
+    </button>
+  </div>
+</form>
+
+<!-- Sort Media Modal -->
+<dialog #editModal class="modal backdrop-blur-sm">
+  <div
+    class="modal-box border border-base-content/10 p-0 py-6 drop-shadow-card sm:w-full sm:max-w-2xl"
+  >
+    <!-- Modal Header -->
+    <div
+      class="sticky top-0 flex items-center justify-between border-b border-base-content/10 px-8 pb-6"
+    >
+      <!-- Title -->
+      <div class="flex flex-col">
+        <h1 class="text-2xl font-bold">Edit Gallery</h1>
+      </div>
+
+      <!-- Close Button -->
+      <button
+        class="btn btn-circle btn-ghost btn-sm -mr-2 focus-within:outline-none"
+        (click)="closeEditModal()"
+      >
+        <i class="fa-solid fa-xmark text-lg"></i>
+      </button>
+    </div>
+
+    <!-- Modal Body -->
+    <div #sortContainer class="grid select-none grid-cols-3 gap-4 p-4">
+      <div
+        *ngFor="let item of mediaIds.controls; let i = index"
+        class="flex cursor-pointer items-center justify-center p-2"
+      >
+        <div class="relative aspect-1 w-full overflow-hidden rounded-box sm:aspect-[4/3]">
+          <!-- Media Prewiew -->
+          <ng-container *ngIf="item.value.id; else loading">
+            <!-- Content -->
+            <img fill class="absolute inset-0 object-cover blur-xl" [ngSrc]="item.value.id" />
+            <img fill class="absolute inset-0 object-contain" [ngSrc]="item.value.id" />
+
+            <!-- Position -->
+            <div
+              class="text-white absolute bottom-2 left-2 flex h-6 w-6 items-center justify-center rounded-full bg-base-100/50 font-digit text-xs font-bold"
+            >
+              {{ i + 1 }}
+            </div>
+
+            <!-- Remove Button -->
+            <div class="absolute right-2 top-2">
+              <button
+                class="btn btn-circle btn-xs border-none bg-base-100/50 sm:btn-sm hover:bg-error/20 hover:text-error"
+                (click)="removeMedia(i)"
+              >
+                <i class="fa-solid fa-trash-can fa-sm"></i>
+              </button>
+            </div>
+          </ng-container>
+
+          <!-- Media Loading Prewiew -->
+          <ng-template #loading>
+            <div class="absolute inset-0 flex items-center justify-center bg-base-300">
+              <span class="loading loading-spinner loading-md text-base-content-muted"></span>
+            </div>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Close Outside Button -->
+  <button class="modal-backdrop focus-within:ring-0" (click)="closeEditModal()">close</button>
+</dialog>

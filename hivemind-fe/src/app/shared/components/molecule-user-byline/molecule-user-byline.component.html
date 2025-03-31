@@ -1,0 +1,33 @@
+<div class="flex items-center gap-4">
+  <!-- User Profile Picture & Mini-Profile Popover -->
+  <div class="h-14 w-14 cursor-pointer">
+    <hm-figure-propic-popover
+      [propicId]="user.profile.propicId"
+      [username]="user.username"
+    ></hm-figure-propic-popover>
+  </div>
+
+  <!-- Full Name & Username -->
+  <div class="flex w-full flex-col gap-0.5 truncate">
+    <div class="flex items-center gap-2">
+      <a
+        stopClickPropagation
+        class="link-hover link inline-block truncate font-heading font-bold"
+        [routerLink]="'/user/' + user.username"
+      >
+        {{ user.profile.fullName }}
+      </a>
+      <i *ngIf="user.verified" class="fa-solid fa-circle-check fa-xs flex-shrink-0 text-accent"></i>
+    </div>
+    <a
+      stopClickPropagation
+      class="link-hover link w-fit truncate text-base-content-muted hover:text-accent"
+      [routerLink]="'/user/' + user.username"
+    >
+      &#64;{{ user.username }}
+    </a>
+  </div>
+
+  <!-- Follow / Unfollow Button -->
+  <hm-button-follow *ngIf="user.relation" [user]="user"></hm-button-follow>
+</div>
