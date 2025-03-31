@@ -4,8 +4,8 @@
 
 To run this application, make sure you have the following tools installed:
 
-- **Docker Engine** version 28.0.1 or higher
-- **Docker Compose** version 2.33.1 or higher
+- **Docker Engine** version 28.0.1 or higher  
+- **Docker Compose** version 2.33.1 or higher  
 
 You can check the installed versions of Docker Engine and Docker Compose with the following commands:
 
@@ -51,3 +51,7 @@ Once the startup process is complete, the following services will be available:
   MINIO_ACCESS_KEY: hivemind
   MINIO_SECRET_KEY: {44ju$^6}-A=_l8R[h1}}Y6rZ0D5l&DOvkI6aWF3HFr6?euk=`
   ```
+
+## Showcase
+
+[![Hivemind Showcase](https://img.youtube.com/vi/TcQixXWtcK8/0.jpg)](https://www.youtube.com/watch?v=TcQixXWtcK8)
