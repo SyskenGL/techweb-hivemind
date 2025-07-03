@@ -80,11 +80,6 @@ Once the startup process is complete, the following services will be available:
 - Frontend: <http://localhost:4200/>
 - MinIO Console: <http://localhost:9001/>
 
-  ```bash
-  MINIO_ACCESS_KEY: hivemind
-  MINIO_SECRET_KEY: {44ju$^6}-A=_l8R[h1}}Y6rZ0D5l&DOvkI6aWF3HFr6?euk=`
-  ```
-
 ## Showcase
 
 [![Hivemind Showcase](https://img.youtube.com/vi/TcQixXWtcK8/0.jpg)](https://www.youtube.com/watch?v=TcQixXWtcK8)
