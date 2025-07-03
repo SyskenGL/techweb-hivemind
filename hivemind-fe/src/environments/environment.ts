@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
   api: {
-    hivemind: 'https://hivemind.uno/hivemind/api'
+    hivemind: 'http://localhost:5000/hivemind/api'
   }
 };
