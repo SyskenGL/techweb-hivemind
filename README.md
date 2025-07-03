@@ -22,6 +22,39 @@ The `hivemind-users-media` folder must be placed in the `deploy\hivemind-obj\bac
 
 **Note:** The script will attempt to restore the backup at every startup if available. Therefore, you can perform the restoration at any time, even after the initial setup.
 
+### 🔐 Environment Variables
+
+All backend-related configuration values, including **MinIO access credentials** (`MINIO_ACCESS_KEY`, `MINIO_SECRET_KEY`) and **other application variables** defined in the `.env` file, can and should be customized as needed.
+
+You can override the default values in one of the following ways:
+
+- **Option 1 – Using a `.env` file** (recommended):  
+  Create or modify the `.env` file at the root of the project. Docker Compose will automatically load it.
+
+  ```env
+  # Example
+  MINIO_ACCESS_KEY=your_custom_access_key
+  MINIO_SECRET_KEY=your_custom_secret_key
+  DATABASE_URL=your_database_url
+  JWT_SECRET=your_jwt_secret
+  ```
+  
+- **Option 2 – In docker-compose.yml:
+Define the variables directly under the environment section of the appropriate service (e.g., backend, minio):
+
+```env
+services:
+  backend:
+    environment:
+      JWT_SECRET: your_jwt_secret
+      DATABASE_URL: your_database_url
+
+  minio:
+    environment:
+      MINIO_ACCESS_KEY: your_custom_access_key
+      MINIO_SECRET_KEY: your_custom_secret_key
+  ```
+
 ## Build & Start
 
 To build and start the application, navigate to the main `hivemind` folder and execute one of the following commands:
