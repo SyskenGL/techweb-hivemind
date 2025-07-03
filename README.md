@@ -39,7 +39,7 @@ You can override the default values in one of the following ways:
   JWT_SECRET=your_jwt_secret
   ```
   
-- **Option 2 – In docker-compose.yml:
+- **Option 2 – In docker-compose.yml**:
 Define the variables directly under the environment section of the appropriate service (e.g., backend, minio):
 
   ```env
