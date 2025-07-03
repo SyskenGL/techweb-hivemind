@@ -42,17 +42,17 @@ You can override the default values in one of the following ways:
 - **Option 2 – In docker-compose.yml:
 Define the variables directly under the environment section of the appropriate service (e.g., backend, minio):
 
-```env
-services:
-  backend:
-    environment:
-      JWT_SECRET: your_jwt_secret
-      DATABASE_URL: your_database_url
-
-  minio:
-    environment:
-      MINIO_ACCESS_KEY: your_custom_access_key
-      MINIO_SECRET_KEY: your_custom_secret_key
+  ```env
+  services:
+    backend:
+      environment:
+        JWT_SECRET: your_jwt_secret
+        DATABASE_URL: your_database_url
+  
+    minio:
+      environment:
+        MINIO_ACCESS_KEY: your_custom_access_key
+        MINIO_SECRET_KEY: your_custom_secret_key
   ```
 
 ## Build & Start
